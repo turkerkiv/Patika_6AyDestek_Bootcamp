@@ -1,0 +1,1 @@
+# Patika_6AyDestek_Bootcamp
