@@ -2,7 +2,7 @@ package Variables;
 
 import java.util.Scanner;
 
-public class GpaCalculatorPractice {
+public class GpaCalculator {
     public static void main(String[] args) {
 
         int mathResult, physicsResult, chemistryResult, languageResult, historyResult, musicResult;
