@@ -22,9 +22,9 @@ public class GpaCalculatorPractice {
         musicResult = input.nextInt();
 
         int total = mathResult + physicsResult + chemistryResult + languageResult + historyResult + musicResult;
-        double averageResult = total / 6d;
+        double gpa = total / 6d;
 
-        String finalOutput = averageResult > 60 ? "You passed the class! Average: " + averageResult  : "You failed the class! Average: " + averageResult;
+        String finalOutput = gpa > 60 ? "You passed the class! Average: " + gpa  : "You failed the class! Average: " + gpa;
         System.out.println(finalOutput);
     }
 }
