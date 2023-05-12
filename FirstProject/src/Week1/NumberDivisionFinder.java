@@ -3,11 +3,11 @@ package Week1;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-public class EvenNumberFinder {
+public class NumberDivisionFinder {
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
 
-        System.out.print("Please enter a number to find even numbers until that number: ");
+        System.out.print("Please enter a number to find numbers that can be divided by 3 and 4 until that number: ");
         int number = input.nextInt();
 
         List<Integer> evenNumbers = new ArrayList<>();
