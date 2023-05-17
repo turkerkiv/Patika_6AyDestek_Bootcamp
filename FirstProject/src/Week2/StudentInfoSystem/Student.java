@@ -38,6 +38,7 @@ public class Student {
 
         }
 
+        //HOMEWORK *****
         public void addBulkOralTestNote(int mat, int fizik, int kimya)
         {
             if (mat >= 0 && mat <= 100) {
@@ -69,6 +70,7 @@ public class Student {
         }
 
         public void calcAverage() {
+            //HOMEWORK *****
             this.average = ((fizik.examNote * fizik.examAffectPercent + fizik.oralTestNote * fizik.oralTestAffectPercent) + (mat.examNote * mat.examAffectPercent + mat.oralTestNote * mat.oralTestAffectPercent) + (kimya.examNote * kimya.examAffectPercent + kimya.oralTestNote * kimya.oralTestAffectPercent)) / 3f;
         }
 
