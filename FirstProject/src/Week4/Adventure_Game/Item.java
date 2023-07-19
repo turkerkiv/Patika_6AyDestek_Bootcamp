@@ -5,6 +5,13 @@ public class Item {
     int ID;
     int price;
 
+    Item(String name, int ID, int price)
+    {
+        this.name = name;
+        this.ID = ID;
+        this.price = price;
+    }
+
     public String getName() {
         return name;
     }
