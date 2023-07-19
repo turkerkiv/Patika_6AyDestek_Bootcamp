@@ -1,7 +1,7 @@
 package Week4.Adventure_Game;
 
 public class Monster extends LivingCreature{
-    int damage;
+    private int damage;
 
     Monster(String name, int ID, int health, int money, int damage) {
         super(name, ID, health, money);

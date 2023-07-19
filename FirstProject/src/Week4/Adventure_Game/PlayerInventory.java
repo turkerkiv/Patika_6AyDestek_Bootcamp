@@ -1,11 +1,11 @@
 package Week4.Adventure_Game;
 
 public class PlayerInventory {
-    Weapon currentWeapon;
-    Armor currentArmor;
-    boolean hasFirewood;
-    boolean hasWater;
-    boolean hasFood;
+    private Weapon currentWeapon;
+    private Armor currentArmor;
+    private boolean hasFirewood;
+    private boolean hasWater;
+    private boolean hasFood;
 
     public Weapon getCurrentWeapon() {
         return currentWeapon;

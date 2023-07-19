@@ -1,7 +1,7 @@
 package Week4.Adventure_Game;
 
 public class Weapon extends Item{
-    int damage;
+    private int damage;
 
     Weapon(String name, int ID, int price, int damage) {
         super(name, ID, price);

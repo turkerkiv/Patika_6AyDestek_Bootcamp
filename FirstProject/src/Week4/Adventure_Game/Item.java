@@ -1,9 +1,9 @@
 package Week4.Adventure_Game;
 
 public class Item {
-    String name;
-    int ID;
-    int price;
+    private String name;
+    private int ID;
+    private int price;
 
     Item(String name, int ID, int price)
     {

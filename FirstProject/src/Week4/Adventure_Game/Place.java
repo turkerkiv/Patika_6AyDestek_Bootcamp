@@ -1,8 +1,8 @@
 package Week4.Adventure_Game;
 
 public class Place {
-    String name;
-    int ID;
+    private String name;
+    private int ID;
 
     Place(String name, int ID)
     {

@@ -3,8 +3,8 @@ package Week4.Adventure_Game;
 import java.util.List;
 
 public class Shop extends SafePlace{
-    List<Armor> armors;
-    List<Weapon> weapons;
+    private List<Armor> armors;
+    private List<Weapon> weapons;
 
     Shop(String name, int ID) {
         super(name, ID);

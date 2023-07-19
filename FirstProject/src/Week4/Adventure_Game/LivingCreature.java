@@ -1,10 +1,10 @@
 package Week4.Adventure_Game;
 
 public class LivingCreature {
-    String name;
-    int ID;
-    int health;
-    int money;
+    private String name;
+    private int ID;
+    private int health;
+    private int money;
 
     LivingCreature(String name, int ID, int health, int money)
     {
