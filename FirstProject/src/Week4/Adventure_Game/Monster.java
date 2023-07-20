@@ -14,8 +14,8 @@ public class Monster extends LivingCreature{
     }
 
     @Override
-    public void attack()
+    public void attack(LivingCreature creature)
     {
-        //TODO
+        creature.takeDamage(damage);
     }
 }
