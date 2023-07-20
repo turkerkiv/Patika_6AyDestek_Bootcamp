@@ -1,11 +1,17 @@
 package Week4.Adventure_Game;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class PlayerInventory {
     private Weapon currentWeapon;
     private Armor currentArmor;
-    private boolean hasFirewood;
-    private boolean hasWater;
-    private boolean hasFood;
+    private final List<Item> rewards;
+
+    PlayerInventory()
+    {
+        rewards = new ArrayList<>();
+    }
 
     public Weapon getCurrentWeapon() {
         return currentWeapon;
@@ -23,15 +29,11 @@ public class PlayerInventory {
         this.currentArmor = currentArmor;
     }
 
-    public void setHasFirewood(boolean hasFirewood) {
-        this.hasFirewood = hasFirewood;
-    }
-
-    public void setHasFood(boolean hasFood) {
-        this.hasFood = hasFood;
-    }
-
-    public void setHasWater(boolean hasWater) {
-        this.hasWater = hasWater;
+    public void addRewardItem(Item item){
+        if(rewards.contains(item))
+        {
+            return;
+        }
+        rewards.add(item);
     }
 }
