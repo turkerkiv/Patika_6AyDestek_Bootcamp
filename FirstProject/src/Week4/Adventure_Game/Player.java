@@ -15,6 +15,13 @@ public class Player extends LivingCreature{
         creature.takeDamage(playerInventory.getCurrentWeapon().getDamage());
     }
 
+    @Override
+    public void takeDamage(int damage)
+    {
+        int decreasedDamage = damage - playerInventory.getCurrentArmor().getDefenceValue();
+        super.takeDamage(decreasedDamage);
+    }
+
     public void takeItem(Item item)
     {
         if(item instanceof Armor)

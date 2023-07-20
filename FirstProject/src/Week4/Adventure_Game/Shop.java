@@ -25,7 +25,7 @@ public class Shop extends SafePlace{
 
     public void buyItem(Player player, int itemID)
     {
-        //TODO implement money and give player default armor and weapon
+        //TODO give player default armor and weapon
         for(Item i : items)
         {
             if(i.getID() == itemID)

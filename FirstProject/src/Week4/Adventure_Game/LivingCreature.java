@@ -1,13 +1,12 @@
 package Week4.Adventure_Game;
 
 public abstract class LivingCreature {
-    private String name;
-    private int ID;
+    private final String name;
+    private final int ID;
     private int health;
     private int money;
 
-    private int defaultHealth;
-    private boolean isDead;
+    private final int defaultHealth;
 
     LivingCreature(String name, int ID, int health, int money)
     {
@@ -47,9 +46,7 @@ public abstract class LivingCreature {
 
     public void takeDamage(int damage)
     {
-        if(isDead) return;
         health -= damage;
-        isDead = health <= 0;
     }
 
     public abstract void attack(LivingCreature creature);
