@@ -2,7 +2,7 @@ package Week4.Adventure_Game;
 
 public class GameManager {
     private Player player;
-    private Place place;
+    private Place currentPlace;
 
     public static void main(String[] args) {
 
@@ -23,8 +23,9 @@ public class GameManager {
         }
     }
 
-    void changePlace(Player player)
+    void changePlace(Place newPlace)
     {
-        //TODO
+        if(newPlace instanceof Home) player.heal();
+        currentPlace = newPlace;
     }
 }

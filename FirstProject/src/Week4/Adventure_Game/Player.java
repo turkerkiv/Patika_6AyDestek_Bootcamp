@@ -6,6 +6,7 @@ public class Player extends LivingCreature{
     Player(String name, int ID, int health, int money) {
         super(name, ID, health, money);
         playerInventory = new PlayerInventory();
+
         //todo implement character choosing
     }
 

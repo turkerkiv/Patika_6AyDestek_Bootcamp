@@ -2,6 +2,7 @@ package Week4.Adventure_Game;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class BattlePlace extends Place{
     private final Item rewardItem;
@@ -21,5 +22,13 @@ public class BattlePlace extends Place{
         {
             monsters.add(new Monster(monster.getName(), monster.getID(), monster.getHealth(), monster.getMoney(), monster.getDamage()));
         }
+    }
+
+    public Monster getRandomMonster()
+    {
+        int randomIndex = (int) (Math.random() * (monsters.size() - 1));
+        Monster monsterToReturn = monsters.get(randomIndex);
+        monsters.remove(randomIndex);
+        return monsterToReturn;
     }
 }
