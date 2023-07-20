@@ -8,6 +8,6 @@ public class Home extends SafePlace{
 
     public void healPlayer(Player player)
     {
-        //TODO
+        player.heal();
     }
 }
