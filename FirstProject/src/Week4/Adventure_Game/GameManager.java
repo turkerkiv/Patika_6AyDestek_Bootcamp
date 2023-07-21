@@ -2,45 +2,94 @@ package Week4.Adventure_Game;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class GameManager {
     private final Player player;
-    private final List<BattlePlace> battlePlaces;
-    private final Shop shop;
-    private final Home home;
+    private final List<Place> places;
     private Place currentPlace;
 
     GameManager() {
         //Battle places
-        battlePlaces = new ArrayList<>();
-        battlePlaces.add(new BattlePlace("Cave", 1, new Item("Food", 0, 0), new Monster("Zombie", 1, 10, 4, 3)));
-        battlePlaces.add(new BattlePlace("Jungle", 2, new Item("Firewood", 0, 0), new Monster("Vampire", 2, 14, 7, 4)));
-        battlePlaces.add(new BattlePlace("River", 3, new Item("Water", 0, 0), new Monster("Bear", 3, 20, 12, 7)));
+        places = new ArrayList<>();
+        places.add(new BattlePlace("Cave", 1, new Item("Food", 0, 0), new Monster("Zombie", 1, 10, 4, 3)));
+        places.add(new BattlePlace("Jungle", 2, new Item("Firewood", 0, 0), new Monster("Vampire", 2, 14, 7, 4)));
+        places.add(new BattlePlace("River", 3, new Item("Water", 0, 0), new Monster("Bear", 3, 20, 12, 7)));
 
-        shop = new Shop("Shop", 4);
-        home = new Home("Home", 5);
+        //safe places
+        places.add(new Shop("Shop", 4));
+        places.add(new Home("Base", 5));
 
         player = new Player("Samurai", 1, 21, 15, 5);
     }
 
-    void startBattle(Player player, Monster monster)
+    public boolean isGameFinished()
     {
+        return player.getHealth() <= 0 || player.areItemsCompleted();
+    }
+
+    public void selectPlace(Scanner scn)
+    {
+        listPlaces();
+
+        int choice = scn.nextInt();
+        Place newPlace = places.get(choice - 1);
+        currentPlace = newPlace;
+
+        onPlaceChange(scn);
+    }
+
+    private void listPlaces()
+    {
+        System.out.println("Select a place to go.");
+        for(Place p : places)
+        {
+            System.out.println("(" + p.getID() + ") "+ p.getName());
+        }
+    }
+
+    private void onPlaceChange(Scanner scn)
+    {
+        if(currentPlace instanceof BattlePlace)
+        {
+            onSelectBattlePlace((BattlePlace) currentPlace);
+            //todo after a battle choose what to do
+        }
+        else if(currentPlace instanceof Home)
+        {
+            System.out.println("You get healed.");
+            player.heal();
+        }
+        else {
+            onSelectShop(scn, (Shop) currentPlace);
+        }
+    }
+
+    private void onSelectBattlePlace(BattlePlace battlePlace)
+    {
+        Monster rndMonster = battlePlace.getRandomMonster();
+
         System.out.println("Battle started!");
         while(player.getHealth() > 0)
         {
             System.out.println("Player's turn: ");
-            player.attack(monster);
+            player.attack(rndMonster);
             //todo maybe add some small delaying her
 
-            if(monster.getHealth() <= 0) break;
+            if(rndMonster.getHealth() <= 0) break;
             System.out.println("Monster's turn: ");
-            monster.attack(player);
+            rndMonster.attack(player);
         }
     }
 
-    void changePlace(Place newPlace)
+    private void onSelectShop(Scanner scn, Shop shop)
     {
-        if(newPlace instanceof Home) player.heal();
-        currentPlace = newPlace;
+        System.out.print("Welcome to the shop sir!");
+        shop.listItems();
+
+        //todo add exiting places
+
+        int choice = scn.nextInt();
+        shop.buyItem(player, choice);
     }
 }

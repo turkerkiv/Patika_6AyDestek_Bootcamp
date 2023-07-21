@@ -37,4 +37,9 @@ public class Player extends LivingCreature{
             playerInventory.addRewardItem(item);
         }
     }
+
+    public boolean areItemsCompleted()
+    {
+        return playerInventory.getRewardCount() >= 3;
+    }
 }

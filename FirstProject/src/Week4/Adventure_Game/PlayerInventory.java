@@ -29,6 +29,8 @@ public class PlayerInventory {
         this.currentArmor = currentArmor;
     }
 
+    public int getRewardCount(){return rewards.size();}
+
     public void addRewardItem(Item item){
         if(rewards.contains(item))
         {
