@@ -16,7 +16,7 @@ public class Monster extends LivingCreature{
     @Override
     public void attack(LivingCreature creature)
     {
-        //todo make sure player taking decreased damage
+        //todo make sure player taking decrease damage
         creature.takeDamage(damage);
     }
 }
