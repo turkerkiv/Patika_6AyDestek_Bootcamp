@@ -12,6 +12,15 @@ public class Player extends LivingCreature{
         //todo implement character choosing
     }
 
+    public void listCurrentAttributes()
+    {
+        System.out.println("Name: " + getName());
+        System.out.println("Health: " + getHealth());
+        System.out.println("Money: " + getMoney());
+        System.out.println("Attack: " + playerInventory.getCurrentWeapon().getDamage());
+        System.out.println("Defence: " + playerInventory.getCurrentArmor().getDefenceValue());
+    }
+
     @Override
     public void attack(LivingCreature creature)
     {
