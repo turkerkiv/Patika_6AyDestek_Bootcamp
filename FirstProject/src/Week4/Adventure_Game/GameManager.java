@@ -12,15 +12,15 @@ public class GameManager {
     GameManager() {
         //Battle places
         places = new ArrayList<>();
-        places.add(new BattlePlace("Cave", 1, new Item("Food", 0, 0), new Monster("Zombie", 1, 10, 4, 3)));
-        places.add(new BattlePlace("Jungle", 2, new Item("Firewood", 0, 0), new Monster("Vampire", 2, 14, 7, 4)));
-        places.add(new BattlePlace("River", 3, new Item("Water", 0, 0), new Monster("Bear", 3, 20, 12, 7)));
+        places.add(new BattlePlace("Cave", 1, new Item("Food", 0, 0), new Monster("Zombie", 1, 10, 6, 5)));
+        places.add(new BattlePlace("Jungle", 2, new Item("Firewood", 0, 0), new Monster("Vampire", 2, 14, 9, 6)));
+        places.add(new BattlePlace("River", 3, new Item("Water", 0, 0), new Monster("Bear", 3, 20, 14, 9)));
 
         //safe places
         places.add(new Shop("Shop", 4));
         places.add(new Home("Base", 5));
 
-        player = new Player("Samurai", 1, 21, 55, 5);
+        player = new Player("Samurai", 1, 21, 55, 2);
 
         //giving default items to player
         ((Shop) places.get(3)).buyItem(player, 0);
@@ -31,7 +31,12 @@ public class GameManager {
 
     public boolean isGameFinished()
     {
-        return player.getHealth() <= 0 || player.areItemsCompleted();
+        if(player.getHealth() <= 0 || player.areItemsCompleted())
+        {
+            System.out.println("Game is finished.");
+            return true;
+        }
+        return false;
     }
 
     public void selectPlace(Scanner scn)
@@ -95,12 +100,9 @@ public class GameManager {
             }
 
             System.out.println();
-
-            //todo handle player's death
             System.out.println("Player's turn: ");
             player.attack(rndMonster);
             System.out.println("Monster's health: " + rndMonster.getHealth());
-
             System.out.println();
 
             try {

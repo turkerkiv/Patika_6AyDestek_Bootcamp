@@ -16,7 +16,7 @@ public class BattlePlace extends Place{
 
     public void spawnMonsters(Monster monster)
     {
-        int monsterCount = (int) (Math.random() * 2) + 2;
+        int monsterCount = (int) (Math.random() * 2) + 3;
         for(int i = 0; i < monsterCount; i++)
         {
             monsters.add(new Monster(monster.getName(), monster.getID(), monster.getHealth(), monster.getMoney(), monster.getDamage()));
@@ -31,7 +31,7 @@ public class BattlePlace extends Place{
     public Item earnReward()
     {
         if(!isPlaceCompleted()) return null;
-        System.out.println("This place is cleared and just earned " + rewardItem.getName());
+        System.out.println("This place is cleared and you just earned " + rewardItem.getName());
         return rewardItem;
     }
 
