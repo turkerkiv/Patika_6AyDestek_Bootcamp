@@ -20,16 +20,15 @@ public class GameManager {
         places.add(new Shop("Shop", 4));
         places.add(new Home("Base", 5));
 
-        player = new Player("Samurai", 1, 21, 150, 5);
+        player = new Player("Samurai", 1, 21, 55, 5);
 
         //giving default items to player
-        ((Shop) places.get(3)).buyItem(player, 1);
-        ((Shop) places.get(3)).buyItem(player, 4);
+        ((Shop) places.get(3)).buyItem(player, 0);
+        ((Shop) places.get(3)).buyItem(player, 2);
 
         player.listCurrentAttributes();
 
         //TODO bug in getting rnd monster
-        //TODO bug in item's price
     }
 
     public boolean isGameFinished()
@@ -104,6 +103,9 @@ public class GameManager {
     private void onSelectShop(Scanner scn, Shop shop)
     {
         System.out.println("Welcome to the shop, sir!");
+
+        player.listCurrentAttributes();
+
         int itemCount = shop.listItems();
 
         int choice = scn.nextInt();
