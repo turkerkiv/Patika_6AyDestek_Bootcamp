@@ -47,6 +47,7 @@ public abstract class LivingCreature {
     public void takeDamage(int damage)
     {
         health -= damage;
+        System.out.println("Hit: " + damage);
     }
 
     public abstract void attack(LivingCreature creature);

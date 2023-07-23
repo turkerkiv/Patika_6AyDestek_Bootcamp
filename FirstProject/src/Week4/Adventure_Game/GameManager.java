@@ -20,7 +20,16 @@ public class GameManager {
         places.add(new Shop("Shop", 4));
         places.add(new Home("Base", 5));
 
-        player = new Player("Samurai", 1, 21, 15, 5);
+        player = new Player("Samurai", 1, 21, 150, 5);
+
+        //giving default items to player
+        ((Shop) places.get(3)).buyItem(player, 1);
+        ((Shop) places.get(3)).buyItem(player, 4);
+
+        player.listCurrentAttributes();
+
+        //TODO bug in getting rnd monster
+        //TODO bug in item's price
     }
 
     public boolean isGameFinished()
@@ -33,8 +42,7 @@ public class GameManager {
         listPlaces();
 
         int choice = scn.nextInt();
-        Place newPlace = places.get(choice - 1);
-        currentPlace = newPlace;
+        currentPlace = places.get(choice - 1);
 
         onPlaceChange(scn);
     }
@@ -53,12 +61,13 @@ public class GameManager {
         if(currentPlace instanceof BattlePlace)
         {
             onSelectBattlePlace((BattlePlace) currentPlace);
-            //todo after a battle choose what to do
+            selectPlace(scn);
         }
         else if(currentPlace instanceof Home)
         {
             System.out.println("You get healed.");
             player.heal();
+            selectPlace(scn);
         }
         else {
             onSelectShop(scn, (Shop) currentPlace);
@@ -70,26 +79,40 @@ public class GameManager {
         Monster rndMonster = battlePlace.getRandomMonster();
 
         System.out.println("Battle started!");
+
         while(player.getHealth() > 0)
         {
+            System.out.println();
+
             System.out.println("Player's turn: ");
             player.attack(rndMonster);
+            System.out.println("Monster's health: " + rndMonster.getHealth());
+
+            System.out.println();
+
             //todo maybe add some small delaying her
+            //todo taking monsters money when died
 
             if(rndMonster.getHealth() <= 0) break;
+
             System.out.println("Monster's turn: ");
             rndMonster.attack(player);
+            System.out.println("Player's health: " + player.getHealth());
         }
     }
 
     private void onSelectShop(Scanner scn, Shop shop)
     {
-        System.out.print("Welcome to the shop sir!");
-        shop.listItems();
-
-        //todo add exiting places
+        System.out.println("Welcome to the shop, sir!");
+        int itemCount = shop.listItems();
 
         int choice = scn.nextInt();
+
+        if(choice > itemCount) {
+            selectPlace(scn);
+            return;
+        }
+
         shop.buyItem(player, choice);
     }
 }

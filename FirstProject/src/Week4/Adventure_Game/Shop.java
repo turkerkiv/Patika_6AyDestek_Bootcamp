@@ -23,24 +23,27 @@ public class Shop extends SafePlace{
         items.add(new Weapon("Rifle", 6, 45, 7));
     }
 
-    public void listItems()
+    public int listItems()
     {
         for(Item i : items)
         {
             System.out.println("(" + i.getID() + ") "+ i.getName());
         }
+
+        System.out.println("("+ (items.size() + 10) +") Go to home");
+        return items.size();
     }
 
     public void buyItem(Player player, int choice)
     {
-        //TODO give player default armor and weapon
             Item i = items.get(choice - 1);
-                if(player.setMoney(-i.getPrice()))
+            if(player.setMoney(-i.getPrice()))
                 {
                     player.takeItem(i);
                     items.remove(i);
+                    System.out.println(i.getName() + " added to inventory");
                 }
-                else
+            else
                 {
                     System.out.println("Not enough money!");
                 }
