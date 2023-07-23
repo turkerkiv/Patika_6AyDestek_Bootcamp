@@ -25,18 +25,19 @@ public class Shop extends SafePlace{
 
     public int listItems()
     {
+        System.out.println();
         for(Item i : items)
         {
-            System.out.println("(" + i.getID() + ") "+ i.getName());
+            System.out.println("(" + items.indexOf(i) + ") "+ i.getName() +" "+i.getPrice() + "$");
         }
 
-        System.out.println("("+ (items.size() + 10) +") Go to home");
+        System.out.println("(Other Number) Go to home");
         return items.size();
     }
 
     public void buyItem(Player player, int choice)
     {
-            Item i = items.get(choice - 1);
+            Item i = items.get(choice);
             if(player.setMoney(-i.getPrice()))
                 {
                     player.takeItem(i);
