@@ -36,6 +36,8 @@ public class GameManager {
 
     public void selectPlace(Scanner scn)
     {
+        if(isGameFinished()) return;
+
         listPlaces();
 
         int choice = scn.nextInt();
@@ -82,10 +84,10 @@ public class GameManager {
     {
         Monster rndMonster = battlePlace.getRandomMonster();
 
-        System.out.println("Battle started!");
-
         while(player.getHealth() > 0)
         {
+            System.out.println("Battle started!");
+
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
