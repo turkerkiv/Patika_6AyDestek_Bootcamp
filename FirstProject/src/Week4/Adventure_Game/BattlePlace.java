@@ -17,7 +17,7 @@ public class BattlePlace extends Place{
 
     public void spawnMonsters(Monster monster)
     {
-        int monsterCount = (int) (Math.random() * 3);
+        int monsterCount = (int) (Math.random() * 2) + 2;
         for(int i = 0; i < monsterCount; i++)
         {
             monsters.add(new Monster(monster.getName(), monster.getID(), monster.getHealth(), monster.getMoney(), monster.getDamage()));
