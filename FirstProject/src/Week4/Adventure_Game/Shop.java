@@ -31,7 +31,7 @@ public class Shop extends SafePlace{
             System.out.println("(" + items.indexOf(i) + ") "+ i.getName() +" "+i.getPrice() + "$");
         }
 
-        System.out.println("(Other Number) Go to home");
+        System.out.println("("+ (items.size()) + "+) Go back");
         return items.size();
     }
 

@@ -12,15 +12,15 @@ public class GameManager {
     GameManager() {
         //Battle places
         places = new ArrayList<>();
-        places.add(new BattlePlace("Cave", 1, new Item("Food", 0, 0), new Monster("Zombie", 1, 10, 6, 5)));
-        places.add(new BattlePlace("Jungle", 2, new Item("Firewood", 0, 0), new Monster("Vampire", 2, 14, 9, 6)));
-        places.add(new BattlePlace("River", 3, new Item("Water", 0, 0), new Monster("Bear", 3, 20, 14, 9)));
+        places.add(new BattlePlace("Cave", 1, new Item("Food", 0, 0), new Monster("Zombie", 1, 10, 13, 5)));
+        places.add(new BattlePlace("Jungle", 2, new Item("Firewood", 0, 0), new Monster("Vampire", 2, 14, 16, 7)));
+        places.add(new BattlePlace("River", 3, new Item("Water", 0, 0), new Monster("Bear", 3, 20, 21, 9)));
 
         //safe places
         places.add(new Shop("Shop", 4));
-        places.add(new Home("Base", 5));
+        places.add(new Home("Base (Heal)", 5));
 
-        player = new Player("Samurai", 1, 21, 55, 2);
+        player = new Player("Samurai", 1, 25, 55, 2);
 
         //giving default items to player
         ((Shop) places.get(3)).buyItem(player, 0);
@@ -53,6 +53,7 @@ public class GameManager {
 
     private void listPlaces()
     {
+        System.out.println();
         System.out.println("Select a place to go.");
         for(Place p : places)
         {
@@ -88,11 +89,10 @@ public class GameManager {
     private void onSelectBattlePlace(BattlePlace battlePlace)
     {
         Monster rndMonster = battlePlace.getRandomMonster();
+        System.out.println("Battle started!");
 
         while(player.getHealth() > 0)
         {
-            System.out.println("Battle started!");
-
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
@@ -137,7 +137,7 @@ public class GameManager {
 
         int choice = scn.nextInt();
 
-        if(choice > itemCount) {
+        if(choice >= itemCount) {
             selectPlace(scn);
             return;
         }
