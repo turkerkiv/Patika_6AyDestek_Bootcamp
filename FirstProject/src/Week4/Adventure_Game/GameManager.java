@@ -20,7 +20,7 @@ public class GameManager {
         places.add(new Shop("Shop", 4));
         places.add(new Home("Base (Heal)", 5));
 
-        player = new Player("Samurai", 1, 25, 55, 2);
+        player = new Player("Player", 1, 25, 55, 2);
 
         //giving default items to player
         ((Shop) places.get(3)).buyItem(player, 0);
@@ -91,6 +91,10 @@ public class GameManager {
         Monster rndMonster = battlePlace.getRandomMonster();
         System.out.println("Battle started!");
 
+        double chance = Math.random();
+        LivingCreature firstStarter = chance > 0.5f ? player : rndMonster;
+        LivingCreature secondStarter = firstStarter == player ? rndMonster : player;
+
         while(player.getHealth() > 0)
         {
             try {
@@ -100,9 +104,9 @@ public class GameManager {
             }
 
             System.out.println();
-            System.out.println("Player's turn: ");
-            player.attack(rndMonster);
-            System.out.println("Monster's health: " + rndMonster.getHealth());
+            System.out.println(firstStarter.getName() +"'s turn: ");
+            firstStarter.attack(secondStarter);
+            System.out.println(secondStarter.getName()+"'s health: " + secondStarter.getHealth());
             System.out.println();
 
             try {
@@ -121,9 +125,9 @@ public class GameManager {
                 break;
             }
 
-            System.out.println("Monster's turn: ");
-            rndMonster.attack(player);
-            System.out.println("Player's health: " + player.getHealth());
+            System.out.println(secondStarter.getName()+"'s turn: ");
+            secondStarter.attack(firstStarter);
+            System.out.println(firstStarter.getName()+"'s health: " + firstStarter.getHealth());
         }
     }
 
