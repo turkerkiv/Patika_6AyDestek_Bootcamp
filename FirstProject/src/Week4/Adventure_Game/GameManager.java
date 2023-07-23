@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class GameManager {
+    private final List<Player> characters;
     private final Player player;
     private final List<Place> places;
     private Place currentPlace;
@@ -20,7 +21,19 @@ public class GameManager {
         places.add(new Shop("Shop", 4));
         places.add(new Home("Base (Heal)", 5));
 
-        player = new Player("Player", 1, 25, 55, 2);
+        //character choosing
+        characters = new ArrayList<>();
+        characters.add(new Player("Samurai", 1, 25, 55, 2));
+        characters.add(new Player("Archer", 2, 22, 60, 4));
+        characters.add(new Player("Chivalry", 3, 28, 45, 5));
+        System.out.println("Please select a character:");
+        for(Player p : characters)
+        {
+            System.out.println("("+ characters.indexOf(p) +") " + p.getName() + " --- health: " + p.getHealth() + " --- money: " + p.getMoney() + " --- character damage: " + p.getCharDamage());
+        }
+        Scanner inp = new Scanner(System.in);
+        int choice = inp.nextInt();
+        player = characters.get(choice);
 
         //giving default items to player
         ((Shop) places.get(3)).buyItem(player, 0);

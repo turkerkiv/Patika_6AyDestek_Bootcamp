@@ -8,8 +8,6 @@ public class Player extends LivingCreature{
         super(name, ID, health, money);
         playerInventory = new PlayerInventory();
         this.charDamage = charDamage;
-
-        //todo implement character choosing
     }
 
     public void listCurrentAttributes()
@@ -21,6 +19,11 @@ public class Player extends LivingCreature{
         System.out.println("Attack: " + playerInventory.getCurrentWeapon().getDamage());
         System.out.println("Defence: " + playerInventory.getCurrentArmor().getDefenceValue());
         System.out.println();
+    }
+
+    public int getCharDamage()
+    {
+        return charDamage;
     }
 
     @Override

@@ -12,7 +12,7 @@ public class Game {
         System.out.println("Welcome to the game!");
         System.out.println();
         System.out.println("""
-                    You are lost in island. To escape the island you must collect all items found in different places.\s
+                    You are lost in island. To escape from the island you must collect all items found in different places.\s
                     But be careful when you go to these places because of some kind of monsters.\s
                     Now you are at your base where you heal. Let's start to collect necessary items.""");
         System.out.println();
