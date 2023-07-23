@@ -36,7 +36,7 @@ public abstract class LivingCreature {
     }
 
     public boolean setMoney(int amount){
-        if((money += amount) <= 0)
+        if((money + amount) <= 0)
         {
             return false;
         }
