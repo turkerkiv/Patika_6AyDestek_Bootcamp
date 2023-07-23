@@ -8,13 +8,18 @@ public class Game {
         GameManager gm = new GameManager();
         Scanner inp = new Scanner(System.in);
 
+        System.out.println();
         System.out.println("Welcome to the game!");
 
         while(!gm.isGameFinished())
         {
-            System.out.print("You are lost in island. To escape the island you must collect all items found in different places." +
-                    " But be careful when you go to these places because of some kind of monsters." +
-                    " Now you are at your base where you heal. Let's start to collect necessary items.");
+            System.out.println();
+            System.out.println("""
+                    You are lost in island. To escape the island you must collect all items found in different places.\s
+                    But be careful when you go to these places because of some kind of monsters.\s
+                    Now you are at your base where you heal. Let's start to collect necessary items.""");
+            System.out.println();
+
             gm.selectPlace(inp);
         }
     }

@@ -89,7 +89,12 @@ public class GameManager {
 
             System.out.println();
 
-            //todo maybe add some small delaying her
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+
             //todo taking monsters money when died
 
             if(rndMonster.getHealth() <= 0) break;
@@ -97,6 +102,12 @@ public class GameManager {
             System.out.println("Monster's turn: ");
             rndMonster.attack(player);
             System.out.println("Player's health: " + player.getHealth());
+
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 

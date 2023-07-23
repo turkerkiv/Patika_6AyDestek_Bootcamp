@@ -14,11 +14,13 @@ public class Player extends LivingCreature{
 
     public void listCurrentAttributes()
     {
+        System.out.println();
         System.out.println("Name: " + getName());
         System.out.println("Health: " + getHealth());
         System.out.println("Money: " + getMoney());
         System.out.println("Attack: " + playerInventory.getCurrentWeapon().getDamage());
         System.out.println("Defence: " + playerInventory.getCurrentArmor().getDefenceValue());
+        System.out.println();
     }
 
     @Override
