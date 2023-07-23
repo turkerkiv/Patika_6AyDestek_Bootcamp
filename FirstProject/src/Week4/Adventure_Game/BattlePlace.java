@@ -2,7 +2,6 @@ package Week4.Adventure_Game;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class BattlePlace extends Place{
     private final Item rewardItem;
@@ -22,6 +21,23 @@ public class BattlePlace extends Place{
         {
             monsters.add(new Monster(monster.getName(), monster.getID(), monster.getHealth(), monster.getMoney(), monster.getDamage()));
         }
+    }
+
+    public void killMonster(Monster monster)
+    {
+        monsters.remove(monster);
+    }
+
+    public Item earnReward()
+    {
+        if(!isPlaceCompleted()) return null;
+        System.out.println("This place is cleared and just earned " + rewardItem.getName());
+        return rewardItem;
+    }
+
+    public boolean isPlaceCompleted()
+    {
+        return monsters.size() == 0;
     }
 
     public Monster getRandomMonster()

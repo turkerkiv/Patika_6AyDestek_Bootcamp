@@ -27,8 +27,6 @@ public class GameManager {
         ((Shop) places.get(3)).buyItem(player, 2);
 
         player.listCurrentAttributes();
-
-        //TODO bug in getting rnd monster
     }
 
     public boolean isGameFinished()
@@ -59,6 +57,13 @@ public class GameManager {
     {
         if(currentPlace instanceof BattlePlace)
         {
+            if(((BattlePlace) currentPlace).isPlaceCompleted())
+            {
+                System.out.println("You already cleaned this place!");
+                selectPlace(scn);
+                return;
+            }
+
             onSelectBattlePlace((BattlePlace) currentPlace);
             selectPlace(scn);
         }
@@ -81,8 +86,15 @@ public class GameManager {
 
         while(player.getHealth() > 0)
         {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+
             System.out.println();
 
+            //todo handle player's death
             System.out.println("Player's turn: ");
             player.attack(rndMonster);
             System.out.println("Monster's health: " + rndMonster.getHealth());
@@ -95,19 +107,19 @@ public class GameManager {
                 throw new RuntimeException(e);
             }
 
-            //todo taking monsters money when died
+            //handling monster's death
+            if(rndMonster.getHealth() <= 0) {
+                player.setMoney(rndMonster.getMoney());
+                battlePlace.killMonster(rndMonster);
 
-            if(rndMonster.getHealth() <= 0) break;
+                Item reward = battlePlace.earnReward();
+                if( reward != null) player.takeItem(reward);
+                break;
+            }
 
             System.out.println("Monster's turn: ");
             rndMonster.attack(player);
             System.out.println("Player's health: " + player.getHealth());
-
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
         }
     }
 
