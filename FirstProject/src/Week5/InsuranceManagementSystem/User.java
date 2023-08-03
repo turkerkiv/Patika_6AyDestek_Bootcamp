@@ -5,13 +5,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class User {
-    private String firstName;
-    private String lastName;
-    private String email;
-    private String password;
-    private String job;
-    private int age;
-    List<Address> addresses = new ArrayList<Address>();
+    private final String firstName;
+    private final String lastName;
+    private final String email;
+    private final String password;
+    private final String job;
+    private final int age;
+    List<Address> addresses = new ArrayList<>();
     private Date lastSignIn;
 
     User(String firstName, String lastName, String email, String password, String job, int age)
