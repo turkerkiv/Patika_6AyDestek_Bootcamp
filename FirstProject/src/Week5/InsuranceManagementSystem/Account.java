@@ -50,7 +50,7 @@ public abstract class Account implements Comparable{
     }
 
     public boolean equals(Object obj) {
-        return obj.hashCode() == hashCode();
+        return ((Account)obj).hashCode() == hashCode();
     }
 
     @Override
@@ -58,5 +58,10 @@ public abstract class Account implements Comparable{
         return Integer.compare(hashCode(), ((Account)o).hashCode());
     }
 
-    public abstract void addInsurancePolicy();
+    public List<Insurance> getActiveInsurances()
+    {
+        return activeInsurances;
+    }
+
+    public abstract void addInsurance(Insurance i);
 }

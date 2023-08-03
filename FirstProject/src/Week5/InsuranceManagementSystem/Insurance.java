@@ -7,6 +7,7 @@ public abstract class Insurance {
     private double dailyPrice;
     private LocalDate startDate;
     private LocalDate endDate;
+    private double finalPrice;
 
     Insurance(String name, double dailyPrice, LocalDate startDate, LocalDate endDate)
     {
@@ -32,5 +33,14 @@ public abstract class Insurance {
         return endDate;
     }
 
-    public abstract double calculateFinalPrice();
+    public double getFinalPrice() {
+        return finalPrice;
+    }
+
+    public void setFinalPrice(double finalPrice)
+    {
+        this.finalPrice = finalPrice;
+    }
+
+    public abstract double calculateDefaultPrice();
 }

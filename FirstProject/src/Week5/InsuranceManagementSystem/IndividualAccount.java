@@ -7,7 +7,8 @@ public class IndividualAccount extends Account{
     }
 
     @Override
-    public void addInsurancePolicy() {
-    //todo
+    public void addInsurance(Insurance i) {
+        i.setFinalPrice(i.calculateDefaultPrice());
+        getActiveInsurances().add(i);
     }
 }

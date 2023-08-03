@@ -9,7 +9,7 @@ public class CarInsurance extends Insurance{
     }
 
     @Override
-    public double calculateFinalPrice() {
+    public double calculateDefaultPrice() {
         Duration diff = Duration.between(getStartDate(), getEndDate());
         long diffDays = diff.toDays();
         return diffDays * getDailyPrice();
