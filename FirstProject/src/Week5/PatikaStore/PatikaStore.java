@@ -58,7 +58,7 @@ public class PatikaStore {
     }
 
     public List<Item> orderItems(int selectedColumnIndex) {
-        //todo filtering could be done by same way like choosing a column and entering a value like brands column is 4 and Samsung
+        //filtering could be done by same way like choosing a column and entering a value like brands column is 4 and Samsung
         List<Item> sorted = new ArrayList<>(items);
         switch (selectedColumnIndex) {
             case 1 -> {
