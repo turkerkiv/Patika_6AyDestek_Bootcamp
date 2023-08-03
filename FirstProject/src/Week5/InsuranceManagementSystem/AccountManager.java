@@ -18,6 +18,7 @@ public class AccountManager {
         {
             try{
                 a.logIn(email,password);
+                return a;
             }catch(Exception e)
             {
                 System.out.println(e.getMessage());
