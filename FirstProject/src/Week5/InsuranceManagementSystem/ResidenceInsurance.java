@@ -1,17 +1,17 @@
 package Week5.InsuranceManagementSystem;
 
-import java.time.Duration;
 import java.time.LocalDate;
+import java.time.Period;
 
 public class ResidenceInsurance extends Insurance{
-    ResidenceInsurance(String name, double dailyPrice, LocalDate startDate, LocalDate endDate) {
-        super(name, dailyPrice, startDate, endDate);
+    ResidenceInsurance( double dailyPrice, LocalDate startDate, LocalDate endDate) {
+        super("Residence Insurance", dailyPrice, startDate, endDate);
     }
 
     @Override
     public double calculateDefaultPrice() {
-        Duration diff = Duration.between(getStartDate(), getEndDate());
-        long diffDays = diff.toDays();
-        return diffDays * getDailyPrice();
+        Period diff = Period.between(getStartDate(), getEndDate());
+        long diffMonths = diff.toTotalMonths();
+        return diffMonths * 30 * getDailyPrice();
     }
 }
