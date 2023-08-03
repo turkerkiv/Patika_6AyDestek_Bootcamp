@@ -16,9 +16,11 @@ public class AccountManager {
     {
         for(Account a : accounts)
         {
-            //todo instead of boolean use try catch and custom invalidauthenticationexception
-            if(a.logIn(email,password)){
-                return a;
+            try{
+                a.logIn(email,password);
+            }catch(Exception e)
+            {
+                System.out.println(e.getMessage());
             }
         }
         return null;
