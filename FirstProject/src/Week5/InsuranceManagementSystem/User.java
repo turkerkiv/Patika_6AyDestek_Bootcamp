@@ -1,6 +1,6 @@
 package Week5.InsuranceManagementSystem;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +12,7 @@ public class User {
     private final String job;
     private final int age;
     List<Address> addresses = new ArrayList<>();
-    private Date lastSignIn;
+    private LocalDate lastSignIn;
 
     User(String firstName, String lastName, String email, String password, String job, int age)
     {
@@ -52,7 +52,7 @@ public class User {
         return addresses;
     }
 
-    public Date getLastSignIn() {
+    public LocalDate getLastSignIn() {
         return lastSignIn;
     }
 }

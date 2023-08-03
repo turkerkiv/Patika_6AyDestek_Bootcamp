@@ -1,17 +1,17 @@
 package Week5.InsuranceManagementSystem;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public abstract class Insurance {
     private String name;
-    private double price;
-    private Date startDate;
-    private Date endDate;
+    private double dailyPrice;
+    private LocalDate startDate;
+    private LocalDate endDate;
 
-    Insurance(String name, double price, Date startDate, Date endDate)
+    Insurance(String name, double dailyPrice, LocalDate startDate, LocalDate endDate)
     {
         this.name = name;
-        this.price = price;
+        this.dailyPrice = dailyPrice;
         this.startDate = startDate;
         this.endDate = endDate;
     }
@@ -20,17 +20,17 @@ public abstract class Insurance {
         return name;
     }
 
-    public double getPrice() {
-        return price;
+    public double getDailyPrice() {
+        return dailyPrice;
     }
 
-    public Date getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
-    public Date getEndDate() {
+    public LocalDate getEndDate() {
         return endDate;
     }
 
-    public abstract void calculate();
+    public abstract double calculateFinalPrice();
 }

@@ -1,14 +1,17 @@
 package Week5.InsuranceManagementSystem;
 
-import java.util.Date;
+import java.time.Duration;
+import java.time.LocalDate;
 
 public class HealthInsurance extends Insurance{
-    HealthInsurance(String name, double price, Date startDate, Date endDate) {
-        super(name, price, startDate, endDate);
+    HealthInsurance(String name, double dailyPrice, LocalDate startDate, LocalDate endDate) {
+        super(name, dailyPrice, startDate, endDate);
     }
 
     @Override
-    public void calculate() {
-    //todo
+    public double calculateFinalPrice() {
+        Duration diff = Duration.between(getStartDate(), getEndDate());
+        long diffDays = diff.toDays();
+        return diffDays * getDailyPrice();
     }
 }
