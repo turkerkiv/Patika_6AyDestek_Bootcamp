@@ -12,19 +12,18 @@ public class AccountManager {
         }
     });
 
-    public Account logIn(String email, String password)
+    public Account logIn(String email, String password) throws Exception
     {
+        Account result = null;
         for(Account a : accounts)
         {
-            try{
-                a.logIn(email,password);
-                return a;
-            }catch(Exception e)
+            if(a.logIn(email,password))
             {
-                System.out.println(e.getMessage());
+                result = a;
             }
         }
-        return null;
+        if(result == null) throw new InvalidAuthenticationException();
+        return result;
     }
 
     public void addAccount(Account acc)

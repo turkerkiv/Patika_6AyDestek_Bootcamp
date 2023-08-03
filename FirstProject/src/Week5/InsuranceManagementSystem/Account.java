@@ -27,15 +27,16 @@ public abstract class Account implements Comparable{
         }
     }
 
-    public void logIn(String email, String password) throws Exception
+    public boolean logIn(String email, String password)
     {
         if(user.getEmail().equals(email) && user.getPassword().equals(password))
         {
             logInStatus = AuthenticationStatus.SUCCESS;
+            return true;
         }
         else {
             logInStatus = AuthenticationStatus.FAIL;
-            throw new InvalidAuthenticationException();
+            return false;
         }
     }
 
