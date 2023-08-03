@@ -7,9 +7,10 @@ public class Main {
     public static void main(String[] args) {
         AccountManager accManager = new AccountManager();
 
-        //user 1 //todo change address manager to make it in user class and then initialize it in user constructor
+        //user 1
         User user1 = new User("Türker", "Kıvılcım", "deneme@gmail.com", "123456","soft-dev", 21);
 
+        //todo change address manager to make it in user class and then initialize it in user constructor
         AddressManager user1AddressManager = new AddressManager(user1);
         HomeAddress user1HomeAddress = new HomeAddress("Turkey","Hatay", "...");
         BusinessAddress user1BusinessAddress = new BusinessAddress("Turkey", "Hatay", "...");
