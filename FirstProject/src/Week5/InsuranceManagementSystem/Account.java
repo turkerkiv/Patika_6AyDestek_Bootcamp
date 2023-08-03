@@ -15,15 +15,28 @@ public abstract class Account implements Comparable{
 
     public final void showUserInfo()
     {
+        System.out.println("Log in status: " + logInStatus);
+        System.out.println();
         System.out.println("Welcome " + user.getFirstName() + " " + user.getLastName());
+        System.out.println();
         System.out.println("Here is your information: ");
         System.out.println("Age: " + user.getAge());
         System.out.println("Email: " + user.getEmail());
         System.out.println("Job: " + user.getJob());
 
+        System.out.println();
+        System.out.println("All addresses");
         for(int i = 0; i < user.getAddresses().size(); i++)
         {
-            System.out.println("Address " + i + ": " + user.getAddresses().get(i));
+            Address address = user.addresses.get(i);
+            System.out.println("Address " + (i+1) + ": Country: " +  address.getCountry() + " --- City: " + address.getCity() + " --- Full Address: " + address.getFullAddress());
+        }
+
+        System.out.println();
+        System.out.println("All active insurances");
+        for(Insurance i : activeInsurances)
+        {
+            System.out.println( "Name: "+i.getName() + " --- start date: " + i.getStartDate() + " --- end date: " + i.getEndDate() + " --- total price: " + String.format("%.2f", i.getFinalPrice()));
         }
     }
 
