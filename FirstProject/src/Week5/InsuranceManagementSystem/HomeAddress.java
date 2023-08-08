@@ -6,7 +6,7 @@ public class HomeAddress implements Address {
     private String city;
     private String fullAddress;
 
-    HomeAddress(String country, String city, String fullAddress)
+    public HomeAddress(String country, String city, String fullAddress)
     {
         this.country = country;
         this.city = city;

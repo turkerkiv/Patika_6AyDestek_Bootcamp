@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.time.Period;
 
 public class HealthInsurance extends Insurance {
-    HealthInsurance(double dailyPrice, LocalDate startDate, LocalDate endDate) {
+    public HealthInsurance(double dailyPrice, LocalDate startDate, LocalDate endDate) {
         super("Health Insurance", dailyPrice, startDate, endDate);
     }
 

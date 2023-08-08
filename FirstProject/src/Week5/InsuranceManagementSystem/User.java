@@ -14,7 +14,7 @@ public class User {
     List<Address> addresses = new ArrayList<>();
     private LocalDate lastSignIn;
 
-    User(String firstName, String lastName, String email, String password, String job, int age)
+    public User(String firstName, String lastName, String email, String password, String job, int age)
     {
         this.firstName = firstName;
         this.lastName = lastName;

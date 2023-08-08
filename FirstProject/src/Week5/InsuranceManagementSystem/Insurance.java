@@ -9,7 +9,7 @@ public abstract class Insurance {
     private LocalDate endDate;
     private double finalPrice;
 
-    Insurance(String name, double dailyPrice, LocalDate startDate, LocalDate endDate)
+    public Insurance(String name, double dailyPrice, LocalDate startDate, LocalDate endDate)
     {
         this.name = name;
         this.dailyPrice = dailyPrice;

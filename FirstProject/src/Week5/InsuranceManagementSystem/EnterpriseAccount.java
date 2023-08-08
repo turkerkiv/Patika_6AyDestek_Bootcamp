@@ -1,9 +1,9 @@
 package Week5.InsuranceManagementSystem;
 
 public class EnterpriseAccount extends Account{
-    double discountRate;
+    private double discountRate;
 
-    EnterpriseAccount(User user, double discountRate) {
+    public EnterpriseAccount(User user, double discountRate) {
         super(user);
         this.discountRate = discountRate;
     }

@@ -3,7 +3,7 @@ package Week5.InsuranceManagementSystem;
 public class AddressManager {
     private final User user;
 
-    AddressManager(User user)
+    public AddressManager(User user)
     {
         this.user = user;
     }

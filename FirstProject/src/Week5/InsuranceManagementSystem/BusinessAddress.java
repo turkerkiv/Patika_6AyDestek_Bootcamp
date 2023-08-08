@@ -5,7 +5,7 @@ public class BusinessAddress implements Address{
     private String city;
     private String fullAddress;
 
-    BusinessAddress(String country, String city, String fullAddress)
+    public BusinessAddress(String country, String city, String fullAddress)
     {
         this.country = country;
         this.city = city;

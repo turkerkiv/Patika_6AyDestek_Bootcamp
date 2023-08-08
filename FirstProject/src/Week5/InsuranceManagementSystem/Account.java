@@ -8,7 +8,7 @@ public abstract class Account implements Comparable{
     private final User user;
     private List<Insurance> activeInsurances = new ArrayList<>();
 
-    Account(User user)
+    public Account(User user)
     {
         this.user = user;
     }

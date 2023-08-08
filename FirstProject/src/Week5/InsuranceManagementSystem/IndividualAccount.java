@@ -2,7 +2,7 @@ package Week5.InsuranceManagementSystem;
 
 public class IndividualAccount extends Account{
 
-    IndividualAccount(User user) {
+    public IndividualAccount(User user) {
         super(user);
     }
 
