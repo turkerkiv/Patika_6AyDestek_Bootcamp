@@ -10,7 +10,7 @@ public class Main {
         //user 1
         User user1 = new User("Türker", "Kıvılcım", "deneme@gmail.com", "123456","soft-dev", 21);
 
-        //todo change address manager to make it in user class and then initialize it in user constructor
+        //IMPROVEMENT could be better with make address manager in user class and then move addresses in address manager
         AddressManager user1AddressManager = new AddressManager(user1);
         HomeAddress user1HomeAddress = new HomeAddress("Turkey","Hatay", "...");
         BusinessAddress user1BusinessAddress = new BusinessAddress("Turkey", "Hatay", "...");
@@ -40,7 +40,8 @@ public class Main {
         user2Acc.addInsurance(user2CarInsurance);
         user2Acc.addInsurance(user2ResidenceInsurance);
 
-        //todo maybe make a menu and use user input
+        //IMPROVEMENT instead of this, could be better to make a menu and use user input to create account etc.
+
         accManager.addAccount(user1Acc);
         accManager.addAccount(user2Acc);
 
