@@ -1,18 +1,12 @@
 package Week6.PatikaClone;
 
+import Week6.PatikaClone.Model.Operator;
+import Week6.PatikaClone.View.OperatorGUI;
+
 public class Main {
-//    private static String DB_URL = "jdbc:postgresql://localhost/PatikaCloneDb";
-//    private static String DB_USERNAME = "postgres";
-//    private static String DB_PASSWORD = "Turker:31200";
-
     public static void main(String[] args) {
-
+        OperatorGUI op = new OperatorGUI(new Operator("134","213","3123","123"));
 //        Connection conn = null;
-//        try{
-//            conn = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
-//            conn.close();
-//        } catch (SQLException e) {
-//            System.out.println(e.getMessage());
-//        }
+
     }
 }
