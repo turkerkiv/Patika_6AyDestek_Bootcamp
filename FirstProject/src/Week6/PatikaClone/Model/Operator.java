@@ -5,6 +5,7 @@ import Week6.PatikaClone.Helper.DBConnector;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class Operator extends User{
@@ -31,6 +32,13 @@ public class Operator extends User{
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+
+        usersList.sort(new Comparator<User>() {
+            @Override
+            public int compare(User o1, User o2) {
+                return o1.getId() - o2.getId();
+            }
+        });
 
         return usersList;
     }
