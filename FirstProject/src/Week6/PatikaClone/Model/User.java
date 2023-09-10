@@ -42,25 +42,4 @@ public class User {
         return userType;
     }
 
-    public List<User> getUserList() {
-        List<User> usersList = new ArrayList<>();
-        try {
-            Statement st = DBConnector.getConn().createStatement();
-            ResultSet usersSet = st.executeQuery("select * from 'User'");
-            while (usersSet.next()) {
-                int id = usersSet.getInt("id");
-                String name = usersSet.getString("name");
-                String username = usersSet.getString("username");
-                String password = usersSet.getString("password");
-                String userType = usersSet.getString("userType");
-
-                User user = new User(id, name, username, password, userType);
-                usersList.add(user);
-            }
-
-            return usersList;
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-    }
 }
