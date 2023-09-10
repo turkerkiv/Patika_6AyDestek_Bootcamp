@@ -1,10 +1,9 @@
 package Week6.PatikaClone.View;
 
-import Week6.PatikaClone.Helper.Helper;
+import Week6.PatikaClone.Helper.*;
+import Week6.PatikaClone.Model.*;
 
 import javax.swing.*;
-import javax.tools.Tool;
-import java.awt.*;
 
 public class OperatorGUI extends JFrame{
     private JPanel wrapper;
@@ -17,30 +16,16 @@ public class OperatorGUI extends JFrame{
     private JLabel lbl_password;
     private JPanel wrp_header;
     private JPanel wrp_inputs;
+    private final Operator operator;
 
-    public OperatorGUI(){
-        for(UIManager.LookAndFeelInfo theme : UIManager.getInstalledLookAndFeels())
-        {
-            if("Nimbus".equals(theme.getName()))
-            {
-                try {
-                    UIManager.setLookAndFeel(theme.getClassName());
-                } catch (ClassNotFoundException e) {
-                    throw new RuntimeException(e);
-                } catch (InstantiationException e) {
-                    throw new RuntimeException(e);
-                } catch (IllegalAccessException e) {
-                    throw new RuntimeException(e);
-                } catch (UnsupportedLookAndFeelException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        }
+    public OperatorGUI(Operator operator){
+        this.operator = operator;
 
+        Helper.setTheme("Nimbus");
         setContentPane(wrapper);
         setSize(680, 480);
         setLocation(Helper.getCenterOfScreen(getSize()));
-        setTitle("Patika");
+        setTitle(Config.PROJECT_TITLE);
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setVisible(true);
 
