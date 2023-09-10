@@ -1,10 +1,12 @@
-package Week6.PatikaClone;
+package Week6.PatikaClone.View;
+
+import Week6.PatikaClone.Helper.Helper;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import javax.tools.Tool;
+import java.awt.*;
 
-public class PatikaClone extends JFrame{
+public class OperatorGUI extends JFrame{
     private JPanel wrapper;
     private JLabel lbl_headline;
     private JLabel lbl_loginScr;
@@ -16,7 +18,7 @@ public class PatikaClone extends JFrame{
     private JPanel wrp_header;
     private JPanel wrp_inputs;
 
-    public PatikaClone(){
+    public OperatorGUI(){
         for(UIManager.LookAndFeelInfo theme : UIManager.getInstalledLookAndFeels())
         {
             if("Nimbus".equals(theme.getName()))
@@ -37,6 +39,7 @@ public class PatikaClone extends JFrame{
 
         setContentPane(wrapper);
         setSize(680, 480);
+        setLocation(Helper.getCenterOfScreen(getSize()));
         setTitle("Patika");
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setVisible(true);
