@@ -1,15 +1,9 @@
 package Week6.PatikaClone;
 
-import Week6.PatikaClone.View.OperatorGUI;
-
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-
 public class Main {
-    private static String DB_URL = "jdbc:postgresql://localhost/PatikaCloneDb";
-    private static String DB_USERNAME = "postgres";
-    private static String DB_PASSWORD = "Turker:31200";
+//    private static String DB_URL = "jdbc:postgresql://localhost/PatikaCloneDb";
+//    private static String DB_USERNAME = "postgres";
+//    private static String DB_PASSWORD = "Turker:31200";
 
     public static void main(String[] args) {
 
