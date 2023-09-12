@@ -71,9 +71,12 @@ public class OperatorGUI extends JFrame {
             return;
         }
 
-        operator.addUser(name, username, password, userType);
-        JOptionPane.showMessageDialog(null, "Added successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
-        updateTable();
+        if(operator.addUser(name, username, password, userType))
+        {
+            JOptionPane.showMessageDialog(null, "Added successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+            updateTable();
+        }
+
         clearInputs();
     }
 

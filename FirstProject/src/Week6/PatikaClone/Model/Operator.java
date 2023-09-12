@@ -2,10 +2,8 @@ package Week6.PatikaClone.Model;
 
 import Week6.PatikaClone.Helper.DBConnector;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.sql.Types;
+import javax.swing.*;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -35,18 +33,19 @@ public class Operator extends User {
             System.out.println(e.getMessage());
         }
 
-        usersList.sort(new Comparator<User>() {
-            @Override
-            public int compare(User o1, User o2) {
-                return o1.getId() - o2.getId();
-            }
-        });
+        usersList.sort((o1, o2) -> o1.getId() - o2.getId());
 
         return usersList;
     }
 
-    public void addUser(String name, String username, String password, String userType) {
+    public boolean addUser(String name, String username, String password, String userType) {
         try {
+            if(hasUserAlready(username))
+            {
+                JOptionPane.showMessageDialog(null, "Username is taken." , "Error", JOptionPane.ERROR_MESSAGE);
+                return false;
+            }
+
             PreparedStatement st = DBConnector.getConn().prepareStatement("insert into \"User\" (name,username,password,\"userType\") values (?,?,?,?)");
             st.setString(1, name);
             st.setString(2, username);
@@ -54,21 +53,30 @@ public class Operator extends User {
             st.setObject(4, userType, Types.OTHER);
             st.executeUpdate();
             st.close();
+            return true;
+        } catch (Exception e) {
+            System.out.println(e);
+            return false;
+        }
+    }
+
+    public void deleteUser(int id) {
+        try {
+            PreparedStatement st = DBConnector.getConn().prepareStatement("delete from \"User\" where id=?");
+            st.setInt(1, id);
+            st.executeUpdate();
+            st.close();
         } catch (Exception e) {
             System.out.println(e);
         }
     }
 
-    public void deleteUser(int id)
-    {
-        try{
-            PreparedStatement st = DBConnector.getConn().prepareStatement("delete from \"User\" where id=?");
-            st.setInt(1, id);
-            st.executeUpdate();
-            st.close();
-        }catch (Exception e)
-        {
-            System.out.println(e);
-        }
+    private boolean hasUserAlready(String username) throws SQLException {
+        PreparedStatement st = DBConnector.getConn().prepareStatement("select * from \"User\" where username=?");
+        st.setString(1, username);
+        ResultSet users = st.executeQuery();
+        boolean hasAlready = users.next();
+        st.close();
+        return hasAlready;
     }
 }
