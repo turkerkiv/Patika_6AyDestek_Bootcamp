@@ -30,7 +30,7 @@ public class Operator extends User {
                 User user = new User(id, name, username, password, userType);
                 usersList.add(user);
             }
-
+            st.close();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -53,7 +53,21 @@ public class Operator extends User {
             st.setString(3, password);
             st.setObject(4, userType, Types.OTHER);
             st.executeUpdate();
+            st.close();
         } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+    public void deleteUser(int id)
+    {
+        try{
+            PreparedStatement st = DBConnector.getConn().prepareStatement("delete from \"User\" where id=?");
+            st.setInt(1, id);
+            st.executeUpdate();
+            st.close();
+        }catch (Exception e)
+        {
             System.out.println(e);
         }
     }

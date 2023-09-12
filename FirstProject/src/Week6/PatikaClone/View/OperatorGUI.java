@@ -25,6 +25,7 @@ public class OperatorGUI extends JFrame {
     private JLabel lbl_userType;
     private JPasswordField fld_password;
     private JButton btn_add_user;
+    private JButton btn_delete_user;
     private final Operator operator;
 
     public OperatorGUI(Operator operator) {
@@ -40,6 +41,57 @@ public class OperatorGUI extends JFrame {
 
         lbl_welcome.setText("Welcome " + operator.getName());
 
+        updateTable();
+
+        //setting combobox
+        cmb_userType.addItem("OPERATOR");
+        cmb_userType.addItem("EDUCATOR");
+        cmb_userType.addItem("STUDENT");
+        cmb_userType.setSelectedIndex(0);
+
+        //handle button click
+        btn_add_user.addActionListener(e -> {
+            addUser();
+        });
+
+        btn_delete_user.addActionListener(e -> {
+            deleteUser();
+        });
+
+    }
+
+    private void addUser() {
+        String name = fld_name.getText();
+        String username = fld_username.getText();
+        String password = fld_password.getText();
+        String userType = cmb_userType.getSelectedItem().toString();
+
+        if (Helper.checkAnyEmpty(name, username, password)) {
+            JOptionPane.showMessageDialog(null, "Please fill all the fields", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        operator.addUser(name, username, password, userType);
+        JOptionPane.showMessageDialog(null, "Added successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+        updateTable();
+        clearInputs();
+    }
+
+    private void deleteUser() {
+        int row = tbl_users.getSelectedRow();
+        if (row == -1) {
+            JOptionPane.showMessageDialog(null, "Please select a row from table!", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        int id = (int) tbl_users.getValueAt(row, 0);
+        operator.deleteUser(id);
+        JOptionPane.showMessageDialog(null, "Deleted successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+        updateTable();
+        clearInputs();
+    }
+
+    private void updateTable() {
         //Adding data to table
         DefaultTableModel mdl_users = new DefaultTableModel();
         Object[] column = {"ID", "Name", "Username", "Password", "User type"};
@@ -52,32 +104,13 @@ public class OperatorGUI extends JFrame {
 
         tbl_users.getTableHeader().setReorderingAllowed(false);
         tbl_users.setModel(mdl_users);
-
-        //setting combobox
-        cmb_userType.addItem("OPERATOR");
-        cmb_userType.addItem("EDUCATOR");
-        cmb_userType.addItem("STUDENT");
-        cmb_userType.setSelectedIndex(0);
-
-        //handle button click
-        btn_add_user.addActionListener(e -> {
-            addUser(mdl_users);
-        });
     }
 
-    private void addUser(DefaultTableModel tableModel) {
-        int id = (int) tableModel.getValueAt(tableModel.getRowCount() - 1, 0) + 1;
-        String name = fld_name.getText();
-        String username = fld_username.getText();
-        String password = fld_password.getText();
-        String userType = cmb_userType.getSelectedItem().toString();
-
-        if (Helper.checkAnyEmpty(name,username,password)) {
-            JOptionPane.showMessageDialog(null, "Please fill all the fields", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        operator.addUser(name, username, password, userType);
-        tableModel.addRow(new Object[]{id, name, username, password, userType});
+    private void clearInputs()
+    {
+        fld_name.setText("");
+        fld_password.setText("");
+        fld_username.setText("");
+        cmb_userType.setSelectedIndex(0);
     }
 }
