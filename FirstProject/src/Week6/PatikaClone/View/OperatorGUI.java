@@ -41,6 +41,7 @@ public class OperatorGUI extends JFrame {
 
         lbl_welcome.setText("Welcome " + operator.getName());
 
+
         updateTable();
 
         //setting combobox
@@ -96,7 +97,13 @@ public class OperatorGUI extends JFrame {
 
     private void updateTable() {
         //Adding data to table
-        DefaultTableModel mdl_users = new DefaultTableModel();
+        DefaultTableModel mdl_users = new DefaultTableModel(){
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                if(column == 0) return false;
+                return super.isCellEditable(row, column);
+            }
+        };
         Object[] column = {"ID", "Name", "Username", "Password", "User type"};
         mdl_users.setColumnIdentifiers(column);
 
@@ -104,7 +111,6 @@ public class OperatorGUI extends JFrame {
             Object[] row = {u.getId(), u.getName(), u.getUsername(), u.getPassword(), u.getUserType()};
             mdl_users.addRow(row);
         }
-
         tbl_users.getTableHeader().setReorderingAllowed(false);
         tbl_users.setModel(mdl_users);
     }
