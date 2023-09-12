@@ -2,15 +2,17 @@ package Week6.PatikaClone.Model;
 
 import Week6.PatikaClone.Helper.DBConnector;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-public class Operator extends User{
-    public Operator(int id,String name, String username, String password, String userType) {
-        super(id,name, username, password, userType);
+public class Operator extends User {
+    public Operator(int id, String name, String username, String password, String userType) {
+        super(id, name, username, password, userType);
     }
 
     public List<User> getUserList() {
@@ -41,5 +43,18 @@ public class Operator extends User{
         });
 
         return usersList;
+    }
+
+    public void addUser(String name, String username, String password, String userType) {
+        try {
+            PreparedStatement st = DBConnector.getConn().prepareStatement("insert into \"User\" (name,username,password,\"userType\") values (?,?,?,?)");
+            st.setString(1, name);
+            st.setString(2, username);
+            st.setString(3, password);
+            st.setObject(4, userType, Types.OTHER);
+            st.executeUpdate();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 }

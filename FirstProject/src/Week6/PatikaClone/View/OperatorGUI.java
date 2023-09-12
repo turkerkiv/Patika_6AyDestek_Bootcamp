@@ -6,7 +6,7 @@ import Week6.PatikaClone.Model.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
-public class OperatorGUI extends JFrame{
+public class OperatorGUI extends JFrame {
     private JPanel wrapper;
     private JTabbedPane tab_operator;
     private JPanel pnl_top;
@@ -15,9 +15,19 @@ public class OperatorGUI extends JFrame{
     private JPanel pnl_users;
     private JTable tbl_users;
     private JScrollPane scrpnl_users;
+    private JLabel lbl_name;
+    private JPanel pnl_user_add;
+    private JTextField fld_name;
+    private JTextField fld_username;
+    private JComboBox cmb_userType;
+    private JLabel lbl_username;
+    private JLabel lbl_password;
+    private JLabel lbl_userType;
+    private JPasswordField fld_password;
+    private JButton btn_add_user;
     private final Operator operator;
 
-    public OperatorGUI(Operator operator){
+    public OperatorGUI(Operator operator) {
         this.operator = operator;
 
         Helper.setTheme("Nimbus");
@@ -28,20 +38,46 @@ public class OperatorGUI extends JFrame{
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setVisible(true);
 
-        lbl_welcome.setText("Welcome "+operator.getName());
+        lbl_welcome.setText("Welcome " + operator.getName());
 
         //Adding data to table
         DefaultTableModel mdl_users = new DefaultTableModel();
         Object[] column = {"ID", "Name", "Username", "Password", "User type"};
         mdl_users.setColumnIdentifiers(column);
 
-        for(User u : operator.getUserList())
-        {
+        for (User u : operator.getUserList()) {
             Object[] row = {u.getId(), u.getName(), u.getUsername(), u.getPassword(), u.getUserType()};
             mdl_users.addRow(row);
         }
 
         tbl_users.getTableHeader().setReorderingAllowed(false);
         tbl_users.setModel(mdl_users);
+
+        //setting combobox
+        cmb_userType.addItem("OPERATOR");
+        cmb_userType.addItem("EDUCATOR");
+        cmb_userType.addItem("STUDENT");
+        cmb_userType.setSelectedIndex(0);
+
+        //handle button click
+        btn_add_user.addActionListener(e -> {
+            addUser(mdl_users);
+        });
+    }
+
+    private void addUser(DefaultTableModel tableModel) {
+        int id = (int) tableModel.getValueAt(tableModel.getRowCount() - 1, 0) + 1;
+        String name = fld_name.getText();
+        String username = fld_username.getText();
+        String password = fld_password.getText();
+        String userType = cmb_userType.getSelectedItem().toString();
+
+        if (Helper.checkAnyEmpty(name,username,password)) {
+            JOptionPane.showMessageDialog(null, "Please fill all the fields", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        operator.addUser(name, username, password, userType);
+        tableModel.addRow(new Object[]{id, name, username, password, userType});
     }
 }

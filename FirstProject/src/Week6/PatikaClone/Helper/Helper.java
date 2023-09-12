@@ -31,4 +31,18 @@ public class Helper {
             }
         }
     }
+
+    public static boolean checkAnyEmpty(String... strings)
+    {
+        boolean isEmpty = false;
+        for(String str : strings)
+        {
+            if (str.trim().isEmpty()) {
+                isEmpty = true;
+                break;
+            }
+        }
+
+        return isEmpty;
+    }
 }
