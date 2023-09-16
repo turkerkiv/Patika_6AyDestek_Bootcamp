@@ -39,9 +39,8 @@ public class Operator extends User {
 
     public boolean addUser(String name, String username, String password, String userType) {
         try {
-            if(hasUserAlready(username))
-            {
-                JOptionPane.showMessageDialog(null, "Username is taken." , "Error", JOptionPane.ERROR_MESSAGE);
+            if (hasUserAlready(username)) {
+                JOptionPane.showMessageDialog(null, "Username is taken.", "Error", JOptionPane.ERROR_MESSAGE);
                 return false;
             }
 
@@ -70,12 +69,10 @@ public class Operator extends User {
         }
     }
 
-    public boolean updateUser(int id, String name, String username, String password)
-    {
-        try{
-            if(hasUserAlready(id,username))
-            {
-                JOptionPane.showMessageDialog(null, "Username is taken." , "Error", JOptionPane.ERROR_MESSAGE);
+    public boolean updateUser(int id, String name, String username, String password) {
+        try {
+            if (hasUserAlready(id, username)) {
+                JOptionPane.showMessageDialog(null, "Username is taken.", "Error", JOptionPane.ERROR_MESSAGE);
                 return false;
             }
 
@@ -87,8 +84,7 @@ public class Operator extends User {
             st.executeUpdate();
             st.close();
             return true;
-        }catch(Exception e)
-        {
+        } catch (Exception e) {
             System.out.println(e);
             return false;
         }
@@ -98,10 +94,10 @@ public class Operator extends User {
         List<User> usersList = new ArrayList<>();
         try {
             PreparedStatement st = DBConnector.getConn().prepareStatement("SELECT * FROM \"User\" WHERE name LIKE ?");
-            st.setString(1, "%"+nameToSearch+"%");
+            st.setString(1, "%" + nameToSearch + "%");
             ResultSet foundUsers = st.executeQuery();
             while (foundUsers.next()) {
-                int id =foundUsers.getInt("id");
+                int id = foundUsers.getInt("id");
                 String name = foundUsers.getString("name");
                 String username = foundUsers.getString("username");
                 String password = foundUsers.getString("password");
@@ -120,6 +116,26 @@ public class Operator extends User {
         return usersList;
     }
 
+    public List<Path> getAllPaths() {
+        List<Path> pathsList = new ArrayList<>();
+        try {
+            Statement st = DBConnector.getConn().createStatement();
+            ResultSet pathsSet = st.executeQuery("select * from \"Path\"");
+            while (pathsSet.next()) {
+                int id = pathsSet.getInt("id");
+                String name = pathsSet.getString("name");
+                Path path = new Path(id, name);
+                pathsList.add(path);
+            }
+            st.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        pathsList.sort((o1, o2) -> o1.getId() - o2.getId());
+        return pathsList;
+    }
+
     private boolean hasUserAlready(String username) throws SQLException {
         PreparedStatement st = DBConnector.getConn().prepareStatement("select * from \"User\" where username=?");
         st.setString(1, username);
@@ -136,5 +152,17 @@ public class Operator extends User {
         boolean hasAlready = users.next() && users.getInt(1) != id;
         st.close();
         return hasAlready;
+    }
+
+    public void addPath(String pathName)
+    {
+        try {
+            PreparedStatement st = DBConnector.getConn().prepareStatement("insert into \"Path\" (name) values (?)");
+            st.setString(1, pathName);
+            st.executeUpdate();
+            st.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 }

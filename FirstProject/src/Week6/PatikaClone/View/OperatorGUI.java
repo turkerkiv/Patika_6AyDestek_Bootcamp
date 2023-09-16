@@ -6,6 +6,8 @@ import Week6.PatikaClone.Model.*;
 import javax.swing.*;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.DefaultTableModel;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 
 public class OperatorGUI extends JFrame {
@@ -32,6 +34,13 @@ public class OperatorGUI extends JFrame {
     private JLabel lbl_search_user;
     private JTextField fld_search_user;
     private JButton btn_search;
+    private JPanel pnl_paths;
+    private JScrollPane scrpnl_paths;
+    private JTable tbl_paths;
+    private JPanel pnl_add_path;
+    private JLabel lbl_path_name;
+    private JTextField fld_path_name;
+    private JButton btn_add_path;
     private final Operator operator;
 
     public OperatorGUI(Operator operator) {
@@ -47,7 +56,7 @@ public class OperatorGUI extends JFrame {
 
         lbl_welcome.setText("Welcome " + operator.getName());
 
-        updateTable(operator.getAllUsers());
+        updateUsersTable(operator.getAllUsers());
 
         //setting combobox
         cmb_userType.addItem("OPERATOR");
@@ -68,6 +77,12 @@ public class OperatorGUI extends JFrame {
         btn_search.addActionListener(e -> {
             searchUsers();
         });
+
+        //paths table ---
+        updatePathsTable();
+        btn_add_path.addActionListener(e -> {
+            addPath();
+        });
     }
 
     private void addUser() {
@@ -83,10 +98,10 @@ public class OperatorGUI extends JFrame {
 
         if (operator.addUser(name, username, password, userType)) {
             JOptionPane.showMessageDialog(null, "Added successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
-            updateTable(operator.getAllUsers());
+            updateUsersTable(operator.getAllUsers());
         }
 
-        clearInputs();
+        clearUserInputs();
     }
 
     private void deleteUser() {
@@ -99,8 +114,8 @@ public class OperatorGUI extends JFrame {
         int id = (int) tbl_users.getValueAt(row, 0);
         operator.deleteUser(id);
         JOptionPane.showMessageDialog(null, "Deleted successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
-        updateTable(operator.getAllUsers());
-        clearInputs();
+        updateUsersTable(operator.getAllUsers());
+        clearUserInputs();
     }
 
     private void updateUser() {
@@ -110,23 +125,22 @@ public class OperatorGUI extends JFrame {
         String username = (String) tbl_users.getValueAt(row, 2);
         String password = (String) tbl_users.getValueAt(row, 3);
         if (!operator.updateUser(id, name, username, password)) {
-            updateTable(operator.getAllUsers());
+            updateUsersTable(operator.getAllUsers());
             return;
         }
         JOptionPane.showMessageDialog(null, "Updated successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
     }
 
-    private void searchUsers()
-    {
-        if(btn_search.getText().isEmpty()) {
-            updateTable(operator.getAllUsers());
+    private void searchUsers() {
+        if (btn_search.getText().isEmpty()) {
+            updateUsersTable(operator.getAllUsers());
             return;
         }
-        updateTable(operator.searchUsers(fld_search_user.getText()));
+        updateUsersTable(operator.searchUsers(fld_search_user.getText()));
         fld_search_user.setText("");
     }
 
-    private void updateTable(List<User> userList) {
+    private void updateUsersTable(List<User> userList) {
         //Adding data to table
         DefaultTableModel mdl_users = new DefaultTableModel() {
             @Override
@@ -155,10 +169,43 @@ public class OperatorGUI extends JFrame {
         tbl_users.setModel(mdl_users);
     }
 
-    private void clearInputs() {
+    private void clearUserInputs() {
         fld_name.setText("");
         fld_password.setText("");
         fld_username.setText("");
         cmb_userType.setSelectedIndex(0);
+    }
+
+    private void updatePathsTable() {
+        DefaultTableModel mdl_paths = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                if (column == 0) return false;
+                return super.isCellEditable(row, column);
+            }
+        };
+        Object[] columns = {"ID", "NAME"};
+        mdl_paths.setColumnIdentifiers(columns);
+
+        for (Path p : operator.getAllPaths()) {
+            Object[] row = {p.getId(), p.getName()};
+            mdl_paths.addRow(row);
+        }
+        tbl_paths.getTableHeader().setReorderingAllowed(false);
+        tbl_paths.setModel(mdl_paths);
+        tbl_paths.getColumnModel().getColumn(0).setMaxWidth(100);
+        tbl_paths.getColumnModel().getColumn(0).setMinWidth(100);
+    }
+
+    private void addPath() {
+        if (fld_path_name.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Please fill the name.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        operator.addPath(fld_path_name.getText());
+        JOptionPane.showMessageDialog(null, "Added successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+        updatePathsTable();
+        fld_path_name.setText("");
     }
 }
