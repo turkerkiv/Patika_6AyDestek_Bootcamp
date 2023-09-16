@@ -6,7 +6,7 @@ import Week6.PatikaClone.Model.*;
 import javax.swing.*;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
+import java.util.List;
 
 public class OperatorGUI extends JFrame {
     private JPanel wrapper;
@@ -28,6 +28,10 @@ public class OperatorGUI extends JFrame {
     private JPasswordField fld_password;
     private JButton btn_add_user;
     private JButton btn_delete_user;
+    private JPanel pnl_search_user;
+    private JLabel lbl_search_user;
+    private JTextField fld_search_user;
+    private JButton btn_search;
     private final Operator operator;
 
     public OperatorGUI(Operator operator) {
@@ -43,7 +47,7 @@ public class OperatorGUI extends JFrame {
 
         lbl_welcome.setText("Welcome " + operator.getName());
 
-        updateTable();
+        updateTable(operator.getAllUsers());
 
         //setting combobox
         cmb_userType.addItem("OPERATOR");
@@ -61,6 +65,9 @@ public class OperatorGUI extends JFrame {
         });
 
         //handle table cell value change
+        btn_search.addActionListener(e -> {
+            searchUsers();
+        });
     }
 
     private void addUser() {
@@ -76,7 +83,7 @@ public class OperatorGUI extends JFrame {
 
         if (operator.addUser(name, username, password, userType)) {
             JOptionPane.showMessageDialog(null, "Added successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
-            updateTable();
+            updateTable(operator.getAllUsers());
         }
 
         clearInputs();
@@ -92,7 +99,7 @@ public class OperatorGUI extends JFrame {
         int id = (int) tbl_users.getValueAt(row, 0);
         operator.deleteUser(id);
         JOptionPane.showMessageDialog(null, "Deleted successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
-        updateTable();
+        updateTable(operator.getAllUsers());
         clearInputs();
     }
 
@@ -103,13 +110,23 @@ public class OperatorGUI extends JFrame {
         String username = (String) tbl_users.getValueAt(row, 2);
         String password = (String) tbl_users.getValueAt(row, 3);
         if (!operator.updateUser(id, name, username, password)) {
-            updateTable();
+            updateTable(operator.getAllUsers());
             return;
         }
         JOptionPane.showMessageDialog(null, "Updated successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
     }
 
-    private void updateTable() {
+    private void searchUsers()
+    {
+        if(btn_search.getText().isEmpty()) {
+            updateTable(operator.getAllUsers());
+            return;
+        }
+        updateTable(operator.searchUsers(fld_search_user.getText()));
+        fld_search_user.setText("");
+    }
+
+    private void updateTable(List<User> userList) {
         //Adding data to table
         DefaultTableModel mdl_users = new DefaultTableModel() {
             @Override
@@ -122,7 +139,7 @@ public class OperatorGUI extends JFrame {
         Object[] column = {"ID", "Name", "Username", "Password", "User type"};
         mdl_users.setColumnIdentifiers(column);
 
-        for (User u : operator.getUserList()) {
+        for (User u : userList) {
             Object[] row = {u.getId(), u.getName(), u.getUsername(), u.getPassword(), u.getUserType()};
             mdl_users.addRow(row);
         }

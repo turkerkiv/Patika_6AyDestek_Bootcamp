@@ -5,7 +5,6 @@ import Week6.PatikaClone.Helper.DBConnector;
 import javax.swing.*;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 public class Operator extends User {
@@ -13,7 +12,7 @@ public class Operator extends User {
         super(id, name, username, password, userType);
     }
 
-    public List<User> getUserList() {
+    public List<User> getAllUsers() {
         List<User> usersList = new ArrayList<>();
         try {
             Statement st = DBConnector.getConn().createStatement();
@@ -93,6 +92,32 @@ public class Operator extends User {
             System.out.println(e);
             return false;
         }
+    }
+
+    public List<User> searchUsers(String nameToSearch) {
+        List<User> usersList = new ArrayList<>();
+        try {
+            PreparedStatement st = DBConnector.getConn().prepareStatement("SELECT * FROM \"User\" WHERE name LIKE ?");
+            st.setString(1, "%"+nameToSearch+"%");
+            ResultSet foundUsers = st.executeQuery();
+            while (foundUsers.next()) {
+                int id =foundUsers.getInt("id");
+                String name = foundUsers.getString("name");
+                String username = foundUsers.getString("username");
+                String password = foundUsers.getString("password");
+                String userType = foundUsers.getString("userType");
+
+                User user = new User(id, name, username, password, userType);
+                usersList.add(user);
+            }
+            st.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        usersList.sort((o1, o2) -> o1.getId() - o2.getId());
+
+        return usersList;
     }
 
     private boolean hasUserAlready(String username) throws SQLException {
