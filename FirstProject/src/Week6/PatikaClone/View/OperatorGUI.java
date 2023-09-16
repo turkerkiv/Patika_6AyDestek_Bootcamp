@@ -7,8 +7,6 @@ import javax.swing.*;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
@@ -195,6 +193,12 @@ public class OperatorGUI extends JFrame {
             mdl_paths.addRow(row);
         }
         tbl_paths.getTableHeader().setReorderingAllowed(false);
+
+        mdl_paths.addTableModelListener(e -> {
+            if(e.getType() != TableModelEvent.UPDATE) return;
+            updatePathsTable();
+        });
+
         tbl_paths.setModel(mdl_paths);
         tbl_paths.getColumnModel().getColumn(0).setMaxWidth(100);
         tbl_paths.getColumnModel().getColumn(0).setMinWidth(100);
@@ -205,6 +209,10 @@ public class OperatorGUI extends JFrame {
         JMenuItem delete = new JMenuItem("Delete");
         delete.addActionListener(e -> {
             deletePath();
+        });
+
+        update.addActionListener(e -> {
+            openPathUpdatePopup();
         });
         popupMenu.add(update);
         popupMenu.add(delete);
@@ -237,5 +245,15 @@ public class OperatorGUI extends JFrame {
         if (selectedOpt == JOptionPane.NO_OPTION) return;
         operator.deletePath(id);
         updatePathsTable();
+    }
+
+    private void openPathUpdatePopup() {
+        int row = tbl_paths.getSelectedRow();
+        int id = (int) tbl_paths.getValueAt(row, 0);
+        String name = (String) tbl_paths.getValueAt(row, 1);
+        UpdatePathGUI updatePopup = new UpdatePathGUI(new Path(id, name), (idToUpdate, newName) -> {
+            operator.updatePath(idToUpdate,newName);
+            updatePathsTable();
+        });
     }
 }

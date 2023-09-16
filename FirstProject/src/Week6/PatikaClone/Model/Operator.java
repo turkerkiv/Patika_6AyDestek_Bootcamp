@@ -177,4 +177,18 @@ public class Operator extends User {
             System.out.println(e);
         }
     }
+
+    public void updatePath(int id, String newName)
+    {
+        try{
+            PreparedStatement st = DBConnector.getConn().prepareStatement("UPDATE \"Path\" SET name=? where id=?");
+            st.setString(1, newName);
+            st.setInt(2, id);
+            st.executeUpdate();
+            st.close();
+        }catch(Exception e)
+        {
+            System.out.println(e);
+        }
+    }
 }
