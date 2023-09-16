@@ -71,11 +71,44 @@ public class Operator extends User {
         }
     }
 
+    public boolean updateUser(int id, String name, String username, String password)
+    {
+        try{
+            if(hasUserAlready(id,username))
+            {
+                JOptionPane.showMessageDialog(null, "Username is taken." , "Error", JOptionPane.ERROR_MESSAGE);
+                return false;
+            }
+
+            PreparedStatement st = DBConnector.getConn().prepareStatement("update \"User\" set name=?, username=?, password=? where id=?");
+            st.setString(1, name);
+            st.setString(2, username);
+            st.setString(3, password);
+            st.setInt(4, id);
+            st.executeUpdate();
+            st.close();
+            return true;
+        }catch(Exception e)
+        {
+            System.out.println(e);
+            return false;
+        }
+    }
+
     private boolean hasUserAlready(String username) throws SQLException {
         PreparedStatement st = DBConnector.getConn().prepareStatement("select * from \"User\" where username=?");
         st.setString(1, username);
         ResultSet users = st.executeQuery();
         boolean hasAlready = users.next();
+        st.close();
+        return hasAlready;
+    }
+
+    private boolean hasUserAlready(int id, String username) throws SQLException {
+        PreparedStatement st = DBConnector.getConn().prepareStatement("select * from \"User\" where username=?");
+        st.setString(1, username);
+        ResultSet users = st.executeQuery();
+        boolean hasAlready = users.next() && users.getInt(1) != id;
         st.close();
         return hasAlready;
     }

@@ -4,7 +4,9 @@ import Week6.PatikaClone.Helper.*;
 import Week6.PatikaClone.Model.*;
 
 import javax.swing.*;
+import javax.swing.event.TableModelEvent;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 public class OperatorGUI extends JFrame {
     private JPanel wrapper;
@@ -41,7 +43,6 @@ public class OperatorGUI extends JFrame {
 
         lbl_welcome.setText("Welcome " + operator.getName());
 
-
         updateTable();
 
         //setting combobox
@@ -59,6 +60,7 @@ public class OperatorGUI extends JFrame {
             deleteUser();
         });
 
+        //handle table cell value change
     }
 
     private void addUser() {
@@ -72,8 +74,7 @@ public class OperatorGUI extends JFrame {
             return;
         }
 
-        if(operator.addUser(name, username, password, userType))
-        {
+        if (operator.addUser(name, username, password, userType)) {
             JOptionPane.showMessageDialog(null, "Added successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
             updateTable();
         }
@@ -95,15 +96,29 @@ public class OperatorGUI extends JFrame {
         clearInputs();
     }
 
+    private void updateUser() {
+        int row = tbl_users.getSelectedRow();
+        int id = (int) tbl_users.getValueAt(row, 0);
+        String name = (String) tbl_users.getValueAt(row, 1);
+        String username = (String) tbl_users.getValueAt(row, 2);
+        String password = (String) tbl_users.getValueAt(row, 3);
+        if (!operator.updateUser(id, name, username, password)) {
+            updateTable();
+            return;
+        }
+        JOptionPane.showMessageDialog(null, "Updated successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+    }
+
     private void updateTable() {
         //Adding data to table
-        DefaultTableModel mdl_users = new DefaultTableModel(){
+        DefaultTableModel mdl_users = new DefaultTableModel() {
             @Override
             public boolean isCellEditable(int row, int column) {
-                if(column == 0) return false;
+                if (column == 0 || column == 4) return false;
                 return super.isCellEditable(row, column);
             }
         };
+
         Object[] column = {"ID", "Name", "Username", "Password", "User type"};
         mdl_users.setColumnIdentifiers(column);
 
@@ -112,11 +127,18 @@ public class OperatorGUI extends JFrame {
             mdl_users.addRow(row);
         }
         tbl_users.getTableHeader().setReorderingAllowed(false);
+
+        mdl_users.addTableModelListener(e -> {
+            if (e.getType() != TableModelEvent.UPDATE) {
+                return;
+            }
+            updateUser();
+        });
+
         tbl_users.setModel(mdl_users);
     }
 
-    private void clearInputs()
-    {
+    private void clearInputs() {
         fld_name.setText("");
         fld_password.setText("");
         fld_username.setText("");
