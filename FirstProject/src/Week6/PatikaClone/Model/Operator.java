@@ -165,4 +165,16 @@ public class Operator extends User {
             System.out.println(e);
         }
     }
+
+    public void deletePath(int id)
+    {
+        try {
+            PreparedStatement st = DBConnector.getConn().prepareStatement("delete from \"Path\" where id=?");
+            st.setInt(1, id);
+            st.executeUpdate();
+            st.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
 }

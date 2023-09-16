@@ -6,8 +6,11 @@ import Week6.PatikaClone.Model.*;
 import javax.swing.*;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.DefaultTableModel;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 
 public class OperatorGUI extends JFrame {
@@ -195,6 +198,25 @@ public class OperatorGUI extends JFrame {
         tbl_paths.setModel(mdl_paths);
         tbl_paths.getColumnModel().getColumn(0).setMaxWidth(100);
         tbl_paths.getColumnModel().getColumn(0).setMinWidth(100);
+
+        //setting right click menu
+        JPopupMenu popupMenu = new JPopupMenu();
+        JMenuItem update = new JMenuItem("Update");
+        JMenuItem delete = new JMenuItem("Delete");
+        delete.addActionListener(e -> {
+            deletePath();
+        });
+        popupMenu.add(update);
+        popupMenu.add(delete);
+        tbl_paths.setComponentPopupMenu(popupMenu);
+        tbl_paths.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                Point point = e.getPoint();
+                int clickedRow = tbl_paths.rowAtPoint(point);
+                tbl_paths.setRowSelectionInterval(clickedRow, clickedRow);
+            }
+        });
     }
 
     private void addPath() {
@@ -204,8 +226,16 @@ public class OperatorGUI extends JFrame {
         }
 
         operator.addPath(fld_path_name.getText());
-        JOptionPane.showMessageDialog(null, "Added successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
         updatePathsTable();
         fld_path_name.setText("");
+    }
+
+    private void deletePath() {
+        int row = tbl_paths.getSelectedRow();
+        int id = (int) tbl_paths.getValueAt(row, 0);
+        int selectedOpt = JOptionPane.showConfirmDialog(null, "Are you sure?", "WAIT", JOptionPane.YES_NO_OPTION);
+        if (selectedOpt == JOptionPane.NO_OPTION) return;
+        operator.deletePath(id);
+        updatePathsTable();
     }
 }
