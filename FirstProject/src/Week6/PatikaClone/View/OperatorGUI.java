@@ -387,6 +387,7 @@ public class OperatorGUI extends JFrame {
         }
         fld_course_name.setText(course.getName());
         fld_prog_lang.setText(course.getLanguage());
+
         setTeacherCmb(course.getUser_id());
         setPathCmb(course.getPath_id());
 
@@ -413,7 +414,8 @@ public class OperatorGUI extends JFrame {
     }
 
     private void setTeacherCmb(int id) {
-        for (int i = 1; i <= cmb_teacher_select.getItemCount(); i++)
+        System.out.println(id);
+        for (int i = 0; i < cmb_teacher_select.getItemCount(); i++)
         {
             User us = (User) cmb_teacher_select.getItemAt(i);
             if(us != null && id == us.getId())
@@ -425,7 +427,7 @@ public class OperatorGUI extends JFrame {
     }
 
     private void setPathCmb(int id) {
-        for (int i = 1; i <= cmb_path_select.getItemCount(); i++)
+        for (int i = 0; i < cmb_path_select.getItemCount(); i++)
         {
             Path us = (Path) cmb_path_select.getItemAt(i);
             if(us != null && id == us.getId())
