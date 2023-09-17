@@ -87,6 +87,14 @@ public class Course {
         st.close();
     }
 
+    public static void deleteCourse(int id) throws SQLException
+    {
+        PreparedStatement st = DBConnector.getConn().prepareStatement("delete from \"Course\" where id=?");
+        st.setInt(1, id);
+        st.executeUpdate();
+        st.close();
+    }
+
     public static void updateCourse(int id, int user_id, int path_id, String name, String language) throws SQLException {
         PreparedStatement st = DBConnector.getConn().prepareStatement("update \"Course\" set user_id=?, path_id=?, name=?, language=? where id=?");
         st.setInt(1, user_id);

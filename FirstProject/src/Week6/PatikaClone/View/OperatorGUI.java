@@ -305,6 +305,29 @@ public class OperatorGUI extends JFrame {
         tbl_courses.getTableHeader().setReorderingAllowed(false);
         tbl_courses.setModel(mdl_courses);
 
+        //set right click menu
+        JPopupMenu popupMenu = new JPopupMenu();
+        JMenuItem update = new JMenuItem("Update");
+        JMenuItem delete = new JMenuItem("Delete");
+        delete.addActionListener(e -> {
+            deleteCourse();
+        });
+
+//        update.addActionListener(e -> {
+//            openPathUpdatePopup();
+//        });
+//        popupMenu.add(update);
+        popupMenu.add(delete);
+        tbl_courses.setComponentPopupMenu(popupMenu);
+        tbl_courses.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                Point point = e.getPoint();
+                int clickedRow = tbl_courses.rowAtPoint(point);
+                tbl_courses.setRowSelectionInterval(clickedRow, clickedRow);
+            }
+        });
+
         //fill comboboxes
         cmb_teacher_select.removeAllItems();
         cmb_path_select.removeAllItems();
@@ -326,6 +349,20 @@ public class OperatorGUI extends JFrame {
         int pathID = ((Path) cmb_path_select.getSelectedItem()).getId();
         try {
             Course.addCourse(userID, pathID,name,lang);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        updateCoursesTable();
+    }
+
+    private void deleteCourse()
+    {
+        int row = tbl_courses.getSelectedRow();
+        int id = (int) tbl_courses.getValueAt(row, 0);
+        int selectedOpt = JOptionPane.showConfirmDialog(null, "Are you sure?", "WAIT", JOptionPane.YES_NO_OPTION);
+        if (selectedOpt == JOptionPane.NO_OPTION) return;
+        try {
+            Course.deleteCourse(id);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
