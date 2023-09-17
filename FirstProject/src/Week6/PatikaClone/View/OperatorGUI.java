@@ -9,6 +9,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.SQLException;
 import java.util.List;
 
 public class OperatorGUI extends JFrame {
@@ -42,6 +43,19 @@ public class OperatorGUI extends JFrame {
     private JLabel lbl_path_name;
     private JTextField fld_path_name;
     private JButton btn_add_path;
+    private JPanel pnl_courses;
+    private JTable tbl_courses;
+    private JScrollPane scrpnl_courses;
+    private JPanel pnl_add_course;
+    private JTextField fld_course_name;
+    private JTextField fld_prog_lang;
+    private JComboBox cmb_path_select;
+    private JComboBox cmb_teacher_select;
+    private JButton btn_add_course;
+    private JLabel lbl_course_name;
+    private JLabel lbl_prog_lang;
+    private JLabel lbl_path_select;
+    private JLabel lbl_teacher_select;
     private final Operator operator;
 
     public OperatorGUI(Operator operator) {
@@ -57,7 +71,7 @@ public class OperatorGUI extends JFrame {
 
         lbl_welcome.setText("Welcome " + operator.getName());
 
-        updateUsersTable(operator.getAllUsers());
+        updateUsersTable(Operator.getAllUsers());
 
         //setting combobox
         cmb_userType.addItem("OPERATOR");
@@ -84,6 +98,10 @@ public class OperatorGUI extends JFrame {
         btn_add_path.addActionListener(e -> {
             addPath();
         });
+
+        //courses table ---
+        updateCoursesTable();
+
     }
 
     private void addUser() {
@@ -97,9 +115,9 @@ public class OperatorGUI extends JFrame {
             return;
         }
 
-        if (operator.addUser(name, username, password, userType)) {
+        if (Operator.addUser(name, username, password, userType)) {
             JOptionPane.showMessageDialog(null, "Added successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
-            updateUsersTable(operator.getAllUsers());
+            updateUsersTable(Operator.getAllUsers());
         }
 
         clearUserInputs();
@@ -113,9 +131,9 @@ public class OperatorGUI extends JFrame {
         }
 
         int id = (int) tbl_users.getValueAt(row, 0);
-        operator.deleteUser(id);
+        Operator.deleteUser(id);
         JOptionPane.showMessageDialog(null, "Deleted successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
-        updateUsersTable(operator.getAllUsers());
+        updateUsersTable(Operator.getAllUsers());
         clearUserInputs();
     }
 
@@ -125,8 +143,8 @@ public class OperatorGUI extends JFrame {
         String name = (String) tbl_users.getValueAt(row, 1);
         String username = (String) tbl_users.getValueAt(row, 2);
         String password = (String) tbl_users.getValueAt(row, 3);
-        if (!operator.updateUser(id, name, username, password)) {
-            updateUsersTable(operator.getAllUsers());
+        if (!Operator.updateUser(id, name, username, password)) {
+            updateUsersTable(Operator.getAllUsers());
             return;
         }
         JOptionPane.showMessageDialog(null, "Updated successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
@@ -134,10 +152,10 @@ public class OperatorGUI extends JFrame {
 
     private void searchUsers() {
         if (btn_search.getText().isEmpty()) {
-            updateUsersTable(operator.getAllUsers());
+            updateUsersTable(Operator.getAllUsers());
             return;
         }
-        updateUsersTable(operator.searchUsers(fld_search_user.getText()));
+        updateUsersTable(Operator.searchUsers(fld_search_user.getText()));
         fld_search_user.setText("");
     }
 
@@ -188,14 +206,14 @@ public class OperatorGUI extends JFrame {
         Object[] columns = {"ID", "NAME"};
         mdl_paths.setColumnIdentifiers(columns);
 
-        for (Path p : operator.getAllPaths()) {
+        for (Path p : Path.getAllPaths()) {
             Object[] row = {p.getId(), p.getName()};
             mdl_paths.addRow(row);
         }
         tbl_paths.getTableHeader().setReorderingAllowed(false);
 
         mdl_paths.addTableModelListener(e -> {
-            if(e.getType() != TableModelEvent.UPDATE) return;
+            if (e.getType() != TableModelEvent.UPDATE) return;
             updatePathsTable();
         });
 
@@ -233,7 +251,7 @@ public class OperatorGUI extends JFrame {
             return;
         }
 
-        operator.addPath(fld_path_name.getText());
+        Path.addPath(fld_path_name.getText());
         updatePathsTable();
         fld_path_name.setText("");
     }
@@ -243,7 +261,7 @@ public class OperatorGUI extends JFrame {
         int id = (int) tbl_paths.getValueAt(row, 0);
         int selectedOpt = JOptionPane.showConfirmDialog(null, "Are you sure?", "WAIT", JOptionPane.YES_NO_OPTION);
         if (selectedOpt == JOptionPane.NO_OPTION) return;
-        operator.deletePath(id);
+        Path.deletePath(id);
         updatePathsTable();
     }
 
@@ -252,8 +270,31 @@ public class OperatorGUI extends JFrame {
         int id = (int) tbl_paths.getValueAt(row, 0);
         String name = (String) tbl_paths.getValueAt(row, 1);
         UpdatePathGUI updatePopup = new UpdatePathGUI(new Path(id, name), (idToUpdate, newName) -> {
-            operator.updatePath(idToUpdate,newName);
+            Path.updatePath(idToUpdate, newName);
             updatePathsTable();
         });
+    }
+
+    private void updateCoursesTable() {
+        DefaultTableModel mdl_courses = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                if (column == 0) return false;
+                return super.isCellEditable(row, column);
+            }
+        };
+
+        mdl_courses.setColumnIdentifiers(new Object[]{"ID", "USER", "PATH", "NAME", "LANGUAGE"});
+        try {
+            for (Course c : Course.getAllCourses()) {
+                Object[] row = {c.getId(), c.getUser().getName(), c.getPath().getName(), c.getName(), c.getLanguage()};
+                mdl_courses.addRow(row);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        tbl_courses.getTableHeader().setReorderingAllowed(false);
+        tbl_courses.setModel(mdl_courses);
     }
 }

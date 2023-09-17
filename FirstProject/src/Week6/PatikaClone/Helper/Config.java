@@ -4,5 +4,5 @@ public class Config {
     public static final String PROJECT_TITLE = "Patika.dev";
     public static String DB_URL = "jdbc:postgresql://localhost/PatikaCloneDb";
     public static String DB_USERNAME = "postgres";
-    public static String DB_PASSWORD = "Turker:31200";
+    public static String DB_PASSWORD = "postgresadmin";
 }
