@@ -91,6 +91,7 @@ public class OperatorGUI extends JFrame {
 
         btn_delete_user.addActionListener(e -> {
             deleteUser();
+            updateCoursesTable();
         });
 
         //handle table cell value change
@@ -191,6 +192,7 @@ public class OperatorGUI extends JFrame {
                 return;
             }
             updateUser();
+            updateCoursesTable();
         });
 
         tbl_users.setModel(mdl_users);
@@ -235,6 +237,7 @@ public class OperatorGUI extends JFrame {
         JMenuItem delete = new JMenuItem("Delete");
         delete.addActionListener(e -> {
             deletePath();
+            updateCoursesTable();
         });
 
         update.addActionListener(e -> {
@@ -280,6 +283,7 @@ public class OperatorGUI extends JFrame {
         UpdatePathGUI updatePopup = new UpdatePathGUI(new Path(id, name), (idToUpdate, newName) -> {
             Path.updatePath(idToUpdate, newName);
             updatePathsTable();
+            updateCoursesTable();
         });
     }
 
@@ -295,7 +299,11 @@ public class OperatorGUI extends JFrame {
         mdl_courses.setColumnIdentifiers(new Object[]{"ID", "USER", "PATH", "NAME", "LANGUAGE"});
         try {
             for (Course c : Course.getAllCourses()) {
-                Object[] row = {c.getId(), c.getUser().getName(), c.getPath().getName(), c.getName(), c.getLanguage()};
+                User user = c.getUser();
+                Path pt = c.getPath();
+                String userName = user == null ? "":user.getName();
+                String pathName = pt == null ? "": pt.getName();
+                Object[] row = {c.getId(), userName, pathName, c.getName(), c.getLanguage()};
                 mdl_courses.addRow(row);
             }
         } catch (SQLException e) {
