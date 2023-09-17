@@ -18,6 +18,13 @@ public class Path {
         this.name = name;
     }
 
+    @Override
+    public String toString()
+    {
+        return name;
+    }
+
+
     public int getId() {
         return id;
     }

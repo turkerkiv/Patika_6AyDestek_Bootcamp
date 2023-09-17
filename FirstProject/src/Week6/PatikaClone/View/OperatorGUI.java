@@ -93,15 +93,25 @@ public class OperatorGUI extends JFrame {
             searchUsers();
         });
 
-        //paths table ---
+        //paths TAB ---
         updatePathsTable();
         btn_add_path.addActionListener(e -> {
             addPath();
         });
 
-        //courses table ---
+        //courses TAB ---
         updateCoursesTable();
+        Operator.getAllUsers().forEach(u -> {
+            if(!u.getUserType().equals("EDUCATOR")) return;
+            cmb_teacher_select.addItem(u);
+        });
+        Path.getAllPaths().forEach(p -> {
+            cmb_path_select.addItem(p);
+        });
 
+        btn_add_course.addActionListener(e -> {
+            addCourse();
+        });
     }
 
     private void addUser() {
@@ -296,5 +306,20 @@ public class OperatorGUI extends JFrame {
 
         tbl_courses.getTableHeader().setReorderingAllowed(false);
         tbl_courses.setModel(mdl_courses);
+    }
+
+    private void addCourse()
+    {
+        if(fld_course_name.getText().isEmpty() || fld_prog_lang.getText().isEmpty()) return;
+        String name = fld_course_name.getText();
+        String lang = fld_prog_lang.getText();
+        int userID = ((User) cmb_teacher_select.getSelectedItem()).getId();
+        int pathID = ((Path) cmb_path_select.getSelectedItem()).getId();
+        try {
+            Course.addCourse(userID, pathID,name,lang);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        updateCoursesTable();
     }
 }
