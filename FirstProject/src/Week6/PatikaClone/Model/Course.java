@@ -77,6 +77,18 @@ public class Course {
         return coursesList;
     }
 
+    public static Course getCourse(int id) throws SQLException {
+        Statement st = DBConnector.getConn().createStatement();
+        ResultSet courses = st.executeQuery("select * from \"Course\" where id=" + id);
+        if (!courses.next()) return null;
+        int user_id = courses.getInt(2);
+        int path_id = courses.getInt(3);
+        String name = courses.getString(4);
+        String lang = courses.getString(5);
+        st.close();
+        return new Course(id, user_id, path_id, name, lang);
+    }
+
     public static void addCourse(int user_id, int path_id, String name, String language) throws SQLException {
         PreparedStatement st = DBConnector.getConn().prepareStatement("insert into \"Course\" (user_id, path_id, name, language) values (?,?,?,?)");
         st.setInt(1, user_id);
@@ -87,8 +99,7 @@ public class Course {
         st.close();
     }
 
-    public static void deleteCourse(int id) throws SQLException
-    {
+    public static void deleteCourse(int id) throws SQLException {
         PreparedStatement st = DBConnector.getConn().prepareStatement("delete from \"Course\" where id=?");
         st.setInt(1, id);
         st.executeUpdate();

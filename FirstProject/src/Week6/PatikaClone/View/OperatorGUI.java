@@ -4,13 +4,9 @@ import Week6.PatikaClone.Helper.*;
 import Week6.PatikaClone.Model.*;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
@@ -60,6 +56,7 @@ public class OperatorGUI extends JFrame {
     private JLabel lbl_prog_lang;
     private JLabel lbl_path_select;
     private JLabel lbl_teacher_select;
+    private JButton btn_update_course;
     private final Operator operator;
 
     public OperatorGUI(Operator operator) {
@@ -110,6 +107,11 @@ public class OperatorGUI extends JFrame {
         updateCoursesTable();
         btn_add_course.addActionListener(e -> {
             addCourse();
+        });
+        btn_update_course.addActionListener(e -> {
+            updateCourse();
+            btn_add_course.setEnabled(true);
+            btn_update_course.setEnabled(false);
         });
     }
 
@@ -291,8 +293,7 @@ public class OperatorGUI extends JFrame {
         DefaultTableModel mdl_courses = new DefaultTableModel() {
             @Override
             public boolean isCellEditable(int row, int column) {
-                if (column == 0) return false;
-                return super.isCellEditable(row, column);
+                return false;
             }
         };
 
@@ -301,8 +302,8 @@ public class OperatorGUI extends JFrame {
             for (Course c : Course.getAllCourses()) {
                 User user = c.getUser();
                 Path pt = c.getPath();
-                String userName = user == null ? "":user.getName();
-                String pathName = pt == null ? "": pt.getName();
+                String userName = user == null ? "" : user.getName();
+                String pathName = pt == null ? "" : pt.getName();
                 Object[] row = {c.getId(), userName, pathName, c.getName(), c.getLanguage()};
                 mdl_courses.addRow(row);
             }
@@ -321,10 +322,10 @@ public class OperatorGUI extends JFrame {
             deleteCourse();
         });
 
-//        update.addActionListener(e -> {
-//            openPathUpdatePopup();
-//        });
-//        popupMenu.add(update);
+        update.addActionListener(e -> {
+            setUpUpdatingCourse();
+        });
+        popupMenu.add(update);
         popupMenu.add(delete);
         tbl_courses.setComponentPopupMenu(popupMenu);
         tbl_courses.addMouseListener(new MouseAdapter() {
@@ -340,7 +341,7 @@ public class OperatorGUI extends JFrame {
         cmb_teacher_select.removeAllItems();
         cmb_path_select.removeAllItems();
         Operator.getAllUsers().forEach(u -> {
-            if(!u.getUserType().equals("EDUCATOR")) return;
+            if (!u.getUserType().equals("EDUCATOR")) return;
             cmb_teacher_select.addItem(u);
         });
         Path.getAllPaths().forEach(p -> {
@@ -348,23 +349,21 @@ public class OperatorGUI extends JFrame {
         });
     }
 
-    private void addCourse()
-    {
-        if(fld_course_name.getText().isEmpty() || fld_prog_lang.getText().isEmpty()) return;
+    private void addCourse() {
+        if (fld_course_name.getText().isEmpty() || fld_prog_lang.getText().isEmpty()) return;
         String name = fld_course_name.getText();
         String lang = fld_prog_lang.getText();
         int userID = ((User) cmb_teacher_select.getSelectedItem()).getId();
         int pathID = ((Path) cmb_path_select.getSelectedItem()).getId();
         try {
-            Course.addCourse(userID, pathID,name,lang);
+            Course.addCourse(userID, pathID, name, lang);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         updateCoursesTable();
     }
 
-    private void deleteCourse()
-    {
+    private void deleteCourse() {
         int row = tbl_courses.getSelectedRow();
         int id = (int) tbl_courses.getValueAt(row, 0);
         int selectedOpt = JOptionPane.showConfirmDialog(null, "Are you sure?", "WAIT", JOptionPane.YES_NO_OPTION);
@@ -375,5 +374,65 @@ public class OperatorGUI extends JFrame {
             throw new RuntimeException(e);
         }
         updateCoursesTable();
+    }
+
+    private void setUpUpdatingCourse() {
+        int row = tbl_courses.getSelectedRow();
+        int id = (int) tbl_courses.getValueAt(row, 0);
+        Course course = null;
+        try {
+            course = Course.getCourse(id);
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        fld_course_name.setText(course.getName());
+        fld_prog_lang.setText(course.getLanguage());
+        setTeacherCmb(course.getUser_id());
+        setPathCmb(course.getPath_id());
+
+        btn_add_course.setEnabled(false);
+        btn_update_course.setEnabled(true);
+        btn_add_course.setText(String.valueOf(id));
+    }
+
+    private void updateCourse() {
+        if (Helper.checkAnyEmpty(fld_course_name.getText(), fld_prog_lang.getText())) return;
+
+        int id = Integer.parseInt(btn_add_course.getText());
+        btn_add_course.setText("Add course");
+        int userID = ((User) cmb_teacher_select.getSelectedItem()).getId();
+        int pathID = ((Path) cmb_path_select.getSelectedItem()).getId();
+        String name = (String) fld_course_name.getText();
+        String lang = (String) fld_prog_lang.getText();
+        try {
+            Course.updateCourse(id, userID, pathID, name, lang);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        updateCoursesTable();
+    }
+
+    private void setTeacherCmb(int id) {
+        for (int i = 1; i <= cmb_teacher_select.getItemCount(); i++)
+        {
+            User us = (User) cmb_teacher_select.getItemAt(i);
+            if(us != null && id == us.getId())
+            {
+                cmb_teacher_select.setSelectedIndex(i);
+                return;
+            }
+        }
+    }
+
+    private void setPathCmb(int id) {
+        for (int i = 1; i <= cmb_path_select.getItemCount(); i++)
+        {
+            Path us = (Path) cmb_path_select.getItemAt(i);
+            if(us != null && id == us.getId())
+            {
+                cmb_path_select.setSelectedIndex(i);
+                return;
+            }
+        }
     }
 }
