@@ -134,11 +134,12 @@ public class Operator extends User {
         PreparedStatement st = DBConnector.getConn().prepareStatement("select * from \"User\" where username=?");
         st.setString(1, username);
         ResultSet users = st.executeQuery();
-        st.close();
         if (users.next()) {
             User us = new User(users.getInt(1), users.getString(2), username, users.getString(4), users.getString(5));
+            st.close();
             return us;
         } else {
+            st.close();
             return null;
         }
     }

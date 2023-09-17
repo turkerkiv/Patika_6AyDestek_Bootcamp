@@ -4,9 +4,13 @@ import Week6.PatikaClone.Helper.*;
 import Week6.PatikaClone.Model.*;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
@@ -82,6 +86,7 @@ public class OperatorGUI extends JFrame {
         //handle button click
         btn_add_user.addActionListener(e -> {
             addUser();
+            updateCoursesTable();
         });
 
         btn_delete_user.addActionListener(e -> {
@@ -97,18 +102,11 @@ public class OperatorGUI extends JFrame {
         updatePathsTable();
         btn_add_path.addActionListener(e -> {
             addPath();
+            updateCoursesTable();
         });
 
         //courses TAB ---
         updateCoursesTable();
-        Operator.getAllUsers().forEach(u -> {
-            if(!u.getUserType().equals("EDUCATOR")) return;
-            cmb_teacher_select.addItem(u);
-        });
-        Path.getAllPaths().forEach(p -> {
-            cmb_path_select.addItem(p);
-        });
-
         btn_add_course.addActionListener(e -> {
             addCourse();
         });
@@ -306,6 +304,17 @@ public class OperatorGUI extends JFrame {
 
         tbl_courses.getTableHeader().setReorderingAllowed(false);
         tbl_courses.setModel(mdl_courses);
+
+        //fill comboboxes
+        cmb_teacher_select.removeAllItems();
+        cmb_path_select.removeAllItems();
+        Operator.getAllUsers().forEach(u -> {
+            if(!u.getUserType().equals("EDUCATOR")) return;
+            cmb_teacher_select.addItem(u);
+        });
+        Path.getAllPaths().forEach(p -> {
+            cmb_path_select.addItem(p);
+        });
     }
 
     private void addCourse()
