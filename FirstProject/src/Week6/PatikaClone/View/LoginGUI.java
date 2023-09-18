@@ -50,16 +50,29 @@ public class LoginGUI extends JFrame {
         }
 
         try {
-            Operator op = Operator.getOperator(fld_username.getText());
-            if (op == null) {
+            User us = Operator.getUser(fld_username.getText());
+            if (us == null) {
                 JOptionPane.showMessageDialog(null, "There is no user with that username", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
-            } else if (!op.getPassword().equals(fld_password.getText())) {
+            } else if (!us.getPassword().equals(fld_password.getText())) {
                 JOptionPane.showMessageDialog(null, "Password is incorrect.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
+
+            switch (us.getUserType()) {
+                case "OPERATOR" -> {
+                    Operator op = new Operator(us.getId(),us.getName(),us.getUsername(),us.getPassword(), us.getUserType());
+                    OperatorGUI opG = new OperatorGUI(op);
+                }
+                case "EDUCATOR" -> {
+                    EducatorGUI edu = new EducatorGUI(us);
+                }
+                case "STUDENT" -> {
+//                    StudentGUI stu = new StudentGUI(us);
+                }
+            }
+
             dispose();
-            OperatorGUI opGUI = new OperatorGUI(op);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
