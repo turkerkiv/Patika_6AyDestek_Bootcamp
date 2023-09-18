@@ -4,6 +4,8 @@ import Week6.PatikaClone.Helper.*;
 import Week6.PatikaClone.Model.*;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
 public class LoginGUI extends JFrame {
@@ -17,6 +19,7 @@ public class LoginGUI extends JFrame {
     private JLabel lbl_password;
     private JPanel wrp_header;
     private JPanel wrp_inputs;
+    private JButton btn_signup;
 
     public LoginGUI() {
 
@@ -31,6 +34,13 @@ public class LoginGUI extends JFrame {
             login();
         });
 
+        btn_signup.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SignupGUI signup = new SignupGUI();
+                dispose();
+            }
+        });
     }
 
     private void login() {

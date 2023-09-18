@@ -74,7 +74,6 @@ public class OperatorGUI extends JFrame {
         updateUsersTable(Operator.getAllUsers());
 
         //setting combobox
-        cmb_userType.addItem("OPERATOR");
         cmb_userType.addItem("EDUCATOR");
         cmb_userType.addItem("STUDENT");
         cmb_userType.setSelectedIndex(0);
@@ -146,8 +145,9 @@ public class OperatorGUI extends JFrame {
         }
 
         int id = (int) tbl_users.getValueAt(row, 0);
-        if(id == loggedInOperator.getId()) {
-            JOptionPane.showMessageDialog(null, "Cannot delete yourself!", "Error", JOptionPane.ERROR_MESSAGE);
+        String userType = (String) tbl_users.getValueAt(row, 4);
+        if(userType.equals("OPERATOR")) {
+            JOptionPane.showMessageDialog(null, "Cannot delete a operator!", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
         Operator.deleteUser(id);
