@@ -19,6 +19,8 @@ public class Helper {
             {
                 try {
                     UIManager.setLookAndFeel(theme.getClassName());
+                    System.out.println(UIManager.getLookAndFeel().getName());
+                    break;
                 } catch (ClassNotFoundException e) {
                     throw new RuntimeException(e);
                 } catch (InstantiationException e) {

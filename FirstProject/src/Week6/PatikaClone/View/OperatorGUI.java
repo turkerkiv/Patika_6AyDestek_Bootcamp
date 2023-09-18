@@ -62,7 +62,6 @@ public class OperatorGUI extends JFrame {
     public OperatorGUI(Operator operator) {
         this.loggedInOperator = operator;
 
-        Helper.setTheme("Nimbus");
         setContentPane(wrapper);
         setSize(680, 480);
         setLocation(Helper.getCenterOfScreen(getSize()));
@@ -113,6 +112,11 @@ public class OperatorGUI extends JFrame {
             btn_add_course.setEnabled(true);
             btn_update_course.setEnabled(false);
         });
+        btn_exit.addActionListener(e -> {
+            dispose();
+            LoginGUI newLoginGUI = new LoginGUI();
+        });
+
     }
 
     private void addUser() {

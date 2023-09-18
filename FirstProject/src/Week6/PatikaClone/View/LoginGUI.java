@@ -19,7 +19,7 @@ public class LoginGUI extends JFrame {
     private JPanel wrp_inputs;
 
     public LoginGUI() {
-        Helper.setTheme("Nimbus");
+
         setContentPane(wrapper);
         setSize(680, 480);
         setLocation(Helper.getCenterOfScreen(getSize()));
@@ -30,6 +30,7 @@ public class LoginGUI extends JFrame {
         btn_login.addActionListener(e -> {
             login();
         });
+
     }
 
     private void login() {

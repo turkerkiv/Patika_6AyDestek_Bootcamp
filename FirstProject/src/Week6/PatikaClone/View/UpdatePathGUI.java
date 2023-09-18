@@ -16,7 +16,6 @@ public class UpdatePathGUI extends JFrame {
 
     public UpdatePathGUI(Path path, UpdateCallback callback)
     {
-        Helper.setTheme("Nimbus");
         setContentPane(wrapper);
         setSize(250, 250);
         setLocation(Helper.getCenterOfScreen(getSize()));
