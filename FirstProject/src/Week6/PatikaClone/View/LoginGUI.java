@@ -4,8 +4,9 @@ import Week6.PatikaClone.Helper.*;
 import Week6.PatikaClone.Model.*;
 
 import javax.swing.*;
+import java.sql.SQLException;
 
-public class LoginGUI extends JFrame{
+public class LoginGUI extends JFrame {
     private JPanel wrapper;
     private JLabel lbl_headline;
     private JLabel lbl_loginScr;
@@ -17,7 +18,7 @@ public class LoginGUI extends JFrame{
     private JPanel wrp_header;
     private JPanel wrp_inputs;
 
-    public LoginGUI(){
+    public LoginGUI() {
         Helper.setTheme("Nimbus");
         setContentPane(wrapper);
         setSize(680, 480);
@@ -27,10 +28,29 @@ public class LoginGUI extends JFrame{
         setVisible(true);
 
         btn_login.addActionListener(e -> {
-            if(fld_username.getText().length() == 0 || fld_password.getText().length() == 0)
-            {
-                JOptionPane.showMessageDialog(null, "Please fill all the fields.", "Error", JOptionPane.ERROR_MESSAGE);
-            }
+            login();
         });
+    }
+
+    private void login() {
+        if (Helper.checkAnyEmpty(fld_password.getText(), fld_username.getText())) {
+            JOptionPane.showMessageDialog(null, "Please fill all the fields.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        try {
+            Operator op = Operator.getOperator(fld_username.getText());
+            if (op == null) {
+                JOptionPane.showMessageDialog(null, "There is no user with that username", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            } else if (!op.getPassword().equals(fld_password.getText())) {
+                JOptionPane.showMessageDialog(null, "Password is incorrect.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            dispose();
+            OperatorGUI opGUI = new OperatorGUI(op);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

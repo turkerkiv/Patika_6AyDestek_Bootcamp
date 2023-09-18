@@ -57,10 +57,10 @@ public class OperatorGUI extends JFrame {
     private JLabel lbl_path_select;
     private JLabel lbl_teacher_select;
     private JButton btn_update_course;
-    private final Operator operator;
+    private final Operator loggedInOperator;
 
     public OperatorGUI(Operator operator) {
-        this.operator = operator;
+        this.loggedInOperator = operator;
 
         Helper.setTheme("Nimbus");
         setContentPane(wrapper);
@@ -142,6 +142,10 @@ public class OperatorGUI extends JFrame {
         }
 
         int id = (int) tbl_users.getValueAt(row, 0);
+        if(id == loggedInOperator.getId()) {
+            JOptionPane.showMessageDialog(null, "Cannot delete yourself!", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         Operator.deleteUser(id);
         JOptionPane.showMessageDialog(null, "Deleted successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
         updateUsersTable(Operator.getAllUsers());
@@ -414,7 +418,6 @@ public class OperatorGUI extends JFrame {
     }
 
     private void setTeacherCmb(int id) {
-        System.out.println(id);
         for (int i = 0; i < cmb_teacher_select.getItemCount(); i++)
         {
             User us = (User) cmb_teacher_select.getItemAt(i);

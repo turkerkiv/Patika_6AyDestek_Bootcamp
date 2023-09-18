@@ -144,6 +144,21 @@ public class Operator extends User {
         }
     }
 
+    public static Operator getOperator(String username) throws SQLException {
+        PreparedStatement st = DBConnector.getConn().prepareStatement("select * from \"User\" where username=? AND \"userType\"=?");
+        st.setString(1, username);
+        st.setObject(2, "OPERATOR", Types.OTHER);
+        ResultSet users = st.executeQuery();
+        if (users.next()) {
+            Operator us = new Operator(users.getInt(1), users.getString(2), username, users.getString(4), users.getString(5));
+            st.close();
+            return us;
+        } else {
+            st.close();
+            return null;
+        }
+    }
+
     private static boolean hasUserAlready(int id, String username) throws SQLException {
         PreparedStatement st = DBConnector.getConn().prepareStatement("select * from \"User\" where username=?");
         st.setString(1, username);
