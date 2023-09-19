@@ -55,48 +55,56 @@ public class Content {
         return relatedCourse;
     }
 
-    public static List<Content> getFilteredContents(int course_id) throws SQLException
-    {
+    public static List<Content> getFilteredContents(int course_id) throws SQLException {
         PreparedStatement pt = DBConnector.getConn().prepareStatement("select * from \"Content\" where course_id=?");
         pt.setInt(1, course_id);
         ResultSet rs = pt.executeQuery();
         List<Content> contents = new ArrayList<>();
-        while(rs.next())
-        {
+        while (rs.next()) {
             int id = rs.getInt(1);
             String name = rs.getString(3);
             String desc = rs.getString(4);
             String videoLink = rs.getString(5);
-            contents.add(new Content(id, course_id,name,desc,videoLink));
+            contents.add(new Content(id, course_id, name, desc, videoLink));
         }
         pt.close();
         return contents;
     }
 
-    public static void addContent(String name, String desc, String videoLink, int course_id) throws SQLException{
-            PreparedStatement pt = DBConnector.getConn().prepareStatement("INSERT INTO \"Content\" (name,description,video_link,course_id) values (?,?,?,?)");
-            pt.setString(1, name);
-            pt.setString(2, desc);
-            pt.setString(3, videoLink);
-            pt.setInt(4, course_id);
-            pt.executeUpdate();
-            pt.close();
+    public static Content getContent(int id) throws SQLException {
+        PreparedStatement pt = DBConnector.getConn().prepareStatement("select * from \"Content\" where id=?");
+        pt.setInt(1, id);
+        ResultSet rs = pt.executeQuery();
+        Content ct = null;
+        if (rs.next()) {
+            ct = new Content(id, rs.getInt(2), rs.getString(3), rs.getString(4), rs.getString(5));
+            rs.close();
+        }
+        return ct;
     }
 
-    public static void deleteContent(int id) throws SQLException
-    {
+    public static void addContent(String name, String desc, String videoLink, int course_id) throws SQLException {
+        PreparedStatement pt = DBConnector.getConn().prepareStatement("INSERT INTO \"Content\" (name,description,video_link,course_id) values (?,?,?,?)");
+        pt.setString(1, name);
+        pt.setString(2, desc);
+        pt.setString(3, videoLink);
+        pt.setInt(4, course_id);
+        pt.executeUpdate();
+        pt.close();
+    }
+
+    public static void deleteContent(int id) throws SQLException {
         Statement st = DBConnector.getConn().createStatement();
-        st.executeUpdate("delete from \"Content\" where id="+id);
+        st.executeUpdate("delete from \"Content\" where id=" + id);
         st.close();
     }
 
-    public static void updateContent(int id, String name, String desc, String videoLink) throws SQLException
-    {
+    public static void updateContent(int id, String name, String desc, String videoLink) throws SQLException {
         PreparedStatement pt = DBConnector.getConn().prepareStatement("UPDATE \"Content\" SET name=?,description=?,video_link=? where id=?");
-        pt.setString(1,name);
-        pt.setString(2,desc);
-        pt.setString(3,videoLink);
-        pt.setInt(4,id);
+        pt.setString(1, name);
+        pt.setString(2, desc);
+        pt.setString(3, videoLink);
+        pt.setInt(4, id);
         pt.executeUpdate();
         pt.close();
     }

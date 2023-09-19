@@ -1,12 +1,8 @@
 package Week6.PatikaClone.View;
 
 import Week6.PatikaClone.Helper.Config;
-import Week6.PatikaClone.Helper.DBConnector;
 import Week6.PatikaClone.Helper.Helper;
-import Week6.PatikaClone.Model.Course;
-import Week6.PatikaClone.Model.User;
-import Week6.PatikaClone.Model.Path;
-import Week6.PatikaClone.Model.Content;
+import Week6.PatikaClone.Model.*;
 
 import javax.swing.*;
 import javax.swing.event.TableModelEvent;
@@ -14,7 +10,6 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -51,7 +46,12 @@ public class EducatorGUI extends JFrame {
         updateEducatorRelatedCoursesTable();
         tbl_courses.getSelectionModel().addListSelectionListener(e -> {
             updateCourseRelatedContentsTable();
+            updateQuestionTable();
         });
+        tbl_contents.getSelectionModel().addListSelectionListener(e -> {
+            updateQuestionTable();
+        });
+
         btn_add_content.addActionListener(e -> {
             addContent();
         });
@@ -82,7 +82,6 @@ public class EducatorGUI extends JFrame {
 
     private void updateCourseRelatedContentsTable() {
         int course_id = (int) tbl_courses.getValueAt(tbl_courses.getSelectedRow(), 0);
-        System.out.println(course_id + " sss");
         DefaultTableModel mdl_related_contents = new DefaultTableModel() {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -180,5 +179,39 @@ public class EducatorGUI extends JFrame {
             throw new RuntimeException(e);
         }
         updateCourseRelatedContentsTable();
+    }
+
+    private void updateQuestionTable() {
+        if(tbl_contents.getSelectedRow() == -1) return;
+        int content_id = (int) tbl_contents.getValueAt(tbl_contents.getSelectedRow(), 0);
+        DefaultTableModel mdl_questions = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return column != 0;
+            }
+        };
+
+        mdl_questions.setColumnIdentifiers(new Object[]{"ID", "Question", "Answer"});
+
+        try {
+            for (Question q : Question.getFilteredQuestions(content_id)) {
+                mdl_questions.addRow(new Object[]{q.getId(), q.getQuestion(), q.getAnswer()});
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        tbl_quiz_questions.setModel(mdl_questions);
+        tbl_quiz_questions.getTableHeader().setReorderingAllowed(false);
+
+        //set right click menu
+        JPopupMenu popupMenu = new JPopupMenu();
+        JMenuItem add = new JMenuItem("Delete");
+        add.addActionListener(e -> {
+//            addQuestion();
+        });
+
+        popupMenu.add(add);
+        tbl_quiz_questions.setComponentPopupMenu(popupMenu);
     }
 }
