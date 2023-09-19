@@ -8,8 +8,7 @@ import javax.swing.*;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -46,7 +45,7 @@ public class EducatorGUI extends JFrame {
         updateEducatorRelatedCoursesTable();
         tbl_courses.getSelectionModel().addListSelectionListener(e -> {
             updateCourseRelatedContentsTable();
-            updateQuestionTable();
+            tbl_quiz_questions.setModel(new DefaultTableModel());
         });
         tbl_contents.getSelectionModel().addListSelectionListener(e -> {
             updateQuestionTable();
@@ -54,6 +53,25 @@ public class EducatorGUI extends JFrame {
 
         btn_add_content.addActionListener(e -> {
             addContent();
+        });
+        scrpnl_quiz_table.addComponentListener(new ComponentAdapter() {
+        });
+
+
+        //set right click menu
+        JPopupMenu popupMenu = new JPopupMenu();
+        JMenuItem add = new JMenuItem("Add question");
+        add.addActionListener(e -> {
+            addQuestion();
+        });
+
+        popupMenu.add(add);
+        scrpnl_quiz_table.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getButton() != MouseEvent.BUTTON3) return;
+                popupMenu.show(scrpnl_quiz_table, e.getX(), e.getY());
+            }
         });
     }
 
@@ -182,7 +200,7 @@ public class EducatorGUI extends JFrame {
     }
 
     private void updateQuestionTable() {
-        if(tbl_contents.getSelectedRow() == -1) return;
+        if (tbl_contents.getSelectedRow() == -1) return;
         int content_id = (int) tbl_contents.getValueAt(tbl_contents.getSelectedRow(), 0);
         DefaultTableModel mdl_questions = new DefaultTableModel() {
             @Override
@@ -204,14 +222,51 @@ public class EducatorGUI extends JFrame {
         tbl_quiz_questions.setModel(mdl_questions);
         tbl_quiz_questions.getTableHeader().setReorderingAllowed(false);
 
-        //set right click menu
-        JPopupMenu popupMenu = new JPopupMenu();
-        JMenuItem add = new JMenuItem("Delete");
-        add.addActionListener(e -> {
-//            addQuestion();
+
+    }
+
+    private void addQuestion() {
+        if (tbl_contents.getSelectedRow() == -1) {
+            JOptionPane.showMessageDialog(null, "Please select a content!");
+            return;
+        }
+        QuestionGUI qGUI = new QuestionGUI((int) tbl_contents.getValueAt(tbl_contents.getSelectedRow(), 0));
+        qGUI.addWindowListener(new WindowListener() {
+            @Override
+            public void windowOpened(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowClosing(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowClosed(WindowEvent e) {
+                updateQuestionTable();
+            }
+
+            @Override
+            public void windowIconified(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowDeiconified(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowActivated(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowDeactivated(WindowEvent e) {
+
+            }
         });
 
-        popupMenu.add(add);
-        tbl_quiz_questions.setComponentPopupMenu(popupMenu);
     }
 }

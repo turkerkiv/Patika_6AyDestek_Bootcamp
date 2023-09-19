@@ -62,8 +62,8 @@ public class Question {
         return questions;
     }
 
-    public static void addQuestion(int id, String ques, String ans, int content_id) throws SQLException {
-        PreparedStatement pt = DBConnector.getConn().prepareStatement("INSERT INTO \"Question\" (question, answer, course_id) values(?,?,?)");
+    public static void addQuestion(String ques, String ans, int content_id) throws SQLException {
+        PreparedStatement pt = DBConnector.getConn().prepareStatement("INSERT INTO \"Question\" (question, answer, content_id) values(?,?,?)");
         pt.setString(1, ques);
         pt.setString(2, ans);
         pt.setInt(3, content_id);
