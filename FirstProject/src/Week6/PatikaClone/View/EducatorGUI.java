@@ -30,6 +30,9 @@ public class EducatorGUI extends JFrame {
     private JScrollPane scrpnl_contents;
     private JPanel pnl_tables;
     private JButton btn_add_content;
+    private JLabel lbl_contents;
+    private JLabel lbl_paths;
+    private JButton btn_exit;
     private User loggedEducator;
 
     public EducatorGUI(User loggedEducator) {
@@ -72,6 +75,11 @@ public class EducatorGUI extends JFrame {
                 if (e.getButton() != MouseEvent.BUTTON3) return;
                 popupMenu.show(scrpnl_quiz_table, e.getX(), e.getY());
             }
+        });
+
+        btn_exit.addActionListener(e -> {
+            dispose();
+            LoginGUI newLoginGUI = new LoginGUI();
         });
     }
 
