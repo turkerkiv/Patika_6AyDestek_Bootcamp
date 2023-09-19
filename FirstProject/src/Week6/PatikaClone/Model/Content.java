@@ -5,6 +5,7 @@ import Week6.PatikaClone.Helper.DBConnector;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -80,5 +81,23 @@ public class Content {
             pt.setInt(4, course_id);
             pt.executeUpdate();
             pt.close();
+    }
+
+    public static void deleteContent(int id) throws SQLException
+    {
+        Statement st = DBConnector.getConn().createStatement();
+        st.executeUpdate("delete from \"Content\" where id="+id);
+        st.close();
+    }
+
+    public static void updateContent(int id, String name, String desc, String videoLink) throws SQLException
+    {
+        PreparedStatement pt = DBConnector.getConn().prepareStatement("UPDATE \"Content\" SET name=?,description=?,video_link=? where id=?");
+        pt.setString(1,name);
+        pt.setString(2,desc);
+        pt.setString(3,videoLink);
+        pt.setInt(4,id);
+        pt.executeUpdate();
+        pt.close();
     }
 }

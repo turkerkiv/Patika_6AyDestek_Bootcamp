@@ -1,6 +1,7 @@
 package Week6.PatikaClone.View;
 
 import Week6.PatikaClone.Helper.Config;
+import Week6.PatikaClone.Helper.DBConnector;
 import Week6.PatikaClone.Helper.Helper;
 import Week6.PatikaClone.Model.Course;
 import Week6.PatikaClone.Model.User;
@@ -8,9 +9,12 @@ import Week6.PatikaClone.Model.Path;
 import Week6.PatikaClone.Model.Content;
 
 import javax.swing.*;
+import javax.swing.event.TableModelEvent;
 import javax.swing.table.DefaultTableModel;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -77,7 +81,7 @@ public class EducatorGUI extends JFrame {
     }
 
     private void updateCourseRelatedContentsTable() {
-        int course_id = (int) tbl_courses.getValueAt(tbl_courses.getSelectedRow(),0);
+        int course_id = (int) tbl_courses.getValueAt(tbl_courses.getSelectedRow(), 0);
         System.out.println(course_id + " sss");
         DefaultTableModel mdl_related_contents = new DefaultTableModel() {
             @Override
@@ -98,6 +102,31 @@ public class EducatorGUI extends JFrame {
 
         tbl_contents.setModel(mdl_related_contents);
         tbl_contents.getTableHeader().setReorderingAllowed(false);
+
+        //set right click menu
+        JPopupMenu popupMenu = new JPopupMenu();
+        JMenuItem delete = new JMenuItem("Delete");
+        delete.addActionListener(e -> {
+            deleteContent();
+        });
+
+        popupMenu.add(delete);
+        tbl_contents.setComponentPopupMenu(popupMenu);
+        tbl_contents.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                Point point = e.getPoint();
+                int clickedRow = tbl_contents.rowAtPoint(point);
+                tbl_contents.setRowSelectionInterval(clickedRow, clickedRow);
+            }
+        });
+
+        mdl_related_contents.addTableModelListener(e -> {
+            if (e.getType() != TableModelEvent.UPDATE) {
+                return;
+            }
+            updateContent();
+        });
     }
 
     private void addContent() {
@@ -117,7 +146,7 @@ public class EducatorGUI extends JFrame {
         int course_id = (int) tbl_courses.getValueAt(tbl_courses.getSelectedRow(), 0);
 
         try {
-            Content.addContent(contentName,desc,videoLink,course_id);
+            Content.addContent(contentName, desc, videoLink, course_id);
             JOptionPane.showMessageDialog(null, "Added.", "Success", JOptionPane.INFORMATION_MESSAGE);
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -126,6 +155,30 @@ public class EducatorGUI extends JFrame {
         fld_content_name.setText("");
         fld_video_link.setText("");
         area_desc.setText("");
+        updateCourseRelatedContentsTable();
+    }
+
+    private void deleteContent() {
+        int id = (int) tbl_contents.getValueAt(tbl_contents.getSelectedRow(), 0);
+        try {
+            Content.deleteContent(id);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        updateCourseRelatedContentsTable();
+    }
+
+    private void updateContent() {
+        int row = tbl_contents.getSelectedRow();
+        int id = (int) tbl_contents.getValueAt(row, 0);
+        String name = (String) tbl_contents.getValueAt(row, 1);
+        String desc = (String) tbl_contents.getValueAt(row, 2);
+        String videoLink = (String) tbl_contents.getValueAt(row, 3);
+        try {
+            Content.updateContent(id, name, desc, videoLink);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         updateCourseRelatedContentsTable();
     }
 }
