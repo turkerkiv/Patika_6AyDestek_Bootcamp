@@ -60,7 +60,7 @@ public class StudentGUI extends JFrame {
         JPopupMenu popupMenu = new JPopupMenu();
         JMenuItem enter = new JMenuItem("Enter");
         enter.addActionListener(e -> {
-            if(tbl_folders.getSelectedRow() == -1) return;
+            if (tbl_folders.getSelectedRow() == -1) return;
             loadPathRelatedCourses((int) tbl_folders.getValueAt(tbl_folders.getSelectedRow(), 0));
         });
 
@@ -85,12 +85,12 @@ public class StudentGUI extends JFrame {
             }
         };
 
-        mdl_courses.setColumnIdentifiers(new Object[]{"ID", "USER", "NAME", "LANGUAGE"});
+        mdl_courses.setColumnIdentifiers(new Object[]{"ID", "NAME", "LANGUAGE", "EDUCATOR"});
         try {
             for (Course c : Course.getCoursesByPathID(pathID)) {
                 User user = c.getUser();
                 String userName = user == null ? "" : user.getName();
-                Object[] row = {c.getId(), userName, c.getName(), c.getLanguage()};
+                Object[] row = {c.getId(), c.getName(), c.getLanguage(), userName};
                 mdl_courses.addRow(row);
             }
         } catch (SQLException e) {
@@ -104,7 +104,7 @@ public class StudentGUI extends JFrame {
         JPopupMenu popupMenu = new JPopupMenu();
         JMenuItem enter = new JMenuItem("Enter");
         enter.addActionListener(e -> {
-            if(tbl_folders.getSelectedRow() == -1) return;
+            if (tbl_folders.getSelectedRow() == -1) return;
             loadCourseRelatedContents((int) tbl_folders.getValueAt(tbl_folders.getSelectedRow(), 0));
         });
 
@@ -128,11 +128,10 @@ public class StudentGUI extends JFrame {
             }
         };
 
-        mdl_questions.setColumnIdentifiers(new Object[]{"ID","NAME","DESCRIPTION","VIDEO LINK"});
+        mdl_questions.setColumnIdentifiers(new Object[]{"ID", "NAME"});
         try {
-            for (Content c : Content.getFilteredContents(courseID))
-            {
-                mdl_questions.addRow(new Object[]{c.getId(), c.getContentName(), c.getContentDesc(), c.getVideoLink()});
+            for (Content c : Content.getFilteredContents(courseID)) {
+                mdl_questions.addRow(new Object[]{c.getId(), c.getContentName()});
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -145,7 +144,7 @@ public class StudentGUI extends JFrame {
         JPopupMenu popupMenu = new JPopupMenu();
         JMenuItem enter = new JMenuItem("Enter");
         enter.addActionListener(e -> {
-            if(tbl_folders.getSelectedRow() == -1) return;
+            if (tbl_folders.getSelectedRow() == -1) return;
             loadContentPage((int) tbl_folders.getValueAt(tbl_folders.getSelectedRow(), 0));
         });
 
@@ -198,7 +197,7 @@ public class StudentGUI extends JFrame {
         JPopupMenu popupMenu = new JPopupMenu();
         JMenuItem solve = new JMenuItem("Solve");
         solve.addActionListener(e -> {
-            if(tbl_questions.getSelectedRow() == -1) return;
+            if (tbl_questions.getSelectedRow() == -1) return;
             int id = (int) tbl_questions.getValueAt(tbl_questions.getSelectedRow(), 0);
             Question q = quests.stream().filter(c -> c.getId() == id).findFirst().orElse(null);
             SolveQuestionGUI slvq = new SolveQuestionGUI(q);
