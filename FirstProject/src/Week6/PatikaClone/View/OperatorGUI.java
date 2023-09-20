@@ -115,7 +115,6 @@ public class OperatorGUI extends JFrame {
             dispose();
             LoginGUI newLoginGUI = new LoginGUI();
         });
-
     }
 
     private void addUser() {

@@ -89,6 +89,21 @@ public class Course {
         return new Course(id, user_id, path_id, name, lang);
     }
 
+    public static List<Course> getCoursesByPathID(int path_id) throws SQLException {
+        Statement st = DBConnector.getConn().createStatement();
+        ResultSet courses = st.executeQuery("select * from \"Course\" where path_id=" + path_id);
+        List<Course> result = new ArrayList<>();
+        while (courses.next()) {
+            int id = courses.getInt(1);
+            int user_id = courses.getInt(2);
+            String name = courses.getString(4);
+            String lang = courses.getString(5);
+            result.add(new Course(id, user_id, path_id, name, lang));
+        }
+        st.close();
+        return result;
+    }
+
     public static void addCourse(int user_id, int path_id, String name, String language) throws SQLException {
         PreparedStatement st = DBConnector.getConn().prepareStatement("insert into \"Course\" (user_id, path_id, name, language) values (?,?,?,?)");
         st.setInt(1, user_id);

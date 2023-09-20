@@ -68,7 +68,7 @@ public class LoginGUI extends JFrame {
                     EducatorGUI edu = new EducatorGUI(us);
                 }
                 case "STUDENT" -> {
-//                    StudentGUI stu = new StudentGUI(us);
+                    StudentGUI stu = new StudentGUI(us);
                 }
             }
 
