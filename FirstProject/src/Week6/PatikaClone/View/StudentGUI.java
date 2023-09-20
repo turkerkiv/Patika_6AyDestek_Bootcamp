@@ -185,6 +185,7 @@ public class StudentGUI extends JFrame {
         try {
             for (Question c : Question.getFilteredQuestions(contentID)) {
                 mdl_questions.addRow(new Object[]{c.getId(), c.getQuestion()});
+                quests.add(c);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -200,6 +201,7 @@ public class StudentGUI extends JFrame {
             if(tbl_questions.getSelectedRow() == -1) return;
             int id = (int) tbl_questions.getValueAt(tbl_questions.getSelectedRow(), 0);
             Question q = quests.stream().filter(c -> c.getId() == id).findFirst().orElse(null);
+            SolveQuestionGUI slvq = new SolveQuestionGUI(q);
         });
 
         popupMenu.add(solve);
